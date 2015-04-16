@@ -27,9 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-import djcelery
-djcelery.setup_loader()
-BROKER_URL = 'django://'
+# Celery settings
+
+BROKER_URL = 'amqp://jsurkont:1234@localhost:5672/myvhost'
+CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@localhost:5672/myvhost'
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 # Application definition
 
@@ -41,7 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djcelery',
-    'kombu.transport.django',
+    #'kombu.transport.django',
     'rabifier',
 )
 
