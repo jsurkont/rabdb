@@ -3,28 +3,38 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import RabifyForm
-from .tasks import add, run_rabifier
-
-
-def index(request, ticket):
-    return HttpResponse("Hello, world. You're at the rabifier index. Ticket numer: {}".format(ticket))
+from .tasks import run_rabifier
 
 
 def result(request, ticket):
     task = run_rabifier.AsyncResult(ticket)
-    #print(task, task.ready())
-    value = task.get()  # FIXME dangerous, get() is waiting for the process to finish
-    return render(request, 'rabifier/result.html', {'result': value, 'ticket': ticket})
+    if task.ready():
+        value = task.get()
+        return render(request, 'rabifier/result.html', {'result': value, 'ticket': ticket})
+    else:
+        return render(request, 'rabifier/status.html')
 
 
 def search(request):
     if request.method == 'POST':
-        form = RabifyForm(request.POST)
+        form = RabifyForm(request.POST, request.FILES)
         if form.is_valid():
-            #a = form.cleaned_data['a']
-            #b = form.cleaned_data['b']
             sequences = form.cleaned_data['sequence']
-            job = run_rabifier.delay(sequences)
+            #if form.cleaned_data['sequence']:
+            #    sequences = form.cleaned_data['sequence']
+            #elif form.cleaned_data['fastafile']:
+            #    sequences = form.cleaned_data['fastafile'].read()
+            #else:
+            #    sequences = ''
+            job = run_rabifier.delay(
+                sequences,
+                email=form.cleaned_data['email'],
+                evalue_rab=form.cleaned_data['evalue_rab'],
+                evalue_motif=form.cleaned_data['evalue_motif'],
+                num_motif=form.cleaned_data['num_motif'],
+                identity=form.cleaned_data['identity'],
+                rab_score=form.cleaned_data['rab_score']
+            )
             return HttpResponseRedirect(reverse('rabifier:result', kwargs={'ticket': job.id}))
     else:
         form = RabifyForm()

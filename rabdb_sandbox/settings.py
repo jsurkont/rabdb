@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 
 BROKER_URL = 'amqp://jsurkont:1234@localhost:5672/myvhost'
 CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@localhost:5672/myvhost'
+CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
@@ -112,7 +113,26 @@ USE_L10N = True
 USE_TZ = True
 
 
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = 'rabdb@igc'
+#EMAIL_HOST_PASSWORD = ''
+#EMAIL_PORT = 587
+#EMAIL_USE_TLS = True
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Rabifier settings
+
+# The maximum number of sequences a user is allowed to upload in one time. Used in rabify/forms.py
+RABMYFIRE_MAX_SEQUENCES = 5
+MAX_UPLOAD_SIZE = 10 * 1024**2
+
+RABMYFIRE_BIN = '/home/jsurkont/lab/projects/03/rabifier/rabmyfire.py'
+RABMYFIRE_PYTHON = '/home/jsurkont/.virtualenv/virtual/bin/python'
