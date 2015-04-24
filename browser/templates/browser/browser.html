@@ -1,0 +1,29 @@
+{% if annotations %}
+    <table>
+        {% for annotation in annotations %}
+            <tr>
+                <td><a href="{% url 'browser:details' annotation.protein.protein %}">{{ annotation.protein.protein }}</a></td>
+                <td>{{ annotation.taxonomy.name }}</td>
+                <td>{{ annotation.rab_subfamily }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+<p>No rabs.</p>
+{% endif %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if annotations.has_previous %}
+            <a href="?page={{ annotations.previous_page_number }}{% if sf %}&amp;sf={{ sf }}{% endif %}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ annotations.number }} of {{ annotations.paginator.num_pages }}.
+        </span>
+
+        {% if annotations.has_next %}
+            <a href="?page={{ annotations.next_page_number }}{% if sf %}&amp;sf={{ sf }}{% endif %}">next</a>
+        {% endif %}
+    </span>
+</div>

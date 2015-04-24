@@ -8,4 +8,5 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rabifier/', include('rabifier.urls', namespace='rabifier')),
+    url(r'^browser/', include('browser.urls', namespace='browser')),
 ]

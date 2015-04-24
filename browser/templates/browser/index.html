@@ -1,0 +1,7 @@
+<h1>Rab Browser</h1>
+
+<form action="{% url 'browser:index' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Search" />
+</form>
