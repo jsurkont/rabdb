@@ -1,0 +1,20 @@
+<head>
+
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'browser/dendrogram.css' %}" />
+
+</head>
+
+<body>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+var profile_info = JSON.parse('{{ profile_info|safe }}');
+//var profile_info = JSON.parse('"foo"');
+//document.write("hello");
+//document.write(profile_info.leaf_number);
+ </script>
+
+<script src="{% static 'browser/dendrogram.js' %}"></script>
+</body>

@@ -41,3 +41,17 @@ class RabBrowserForm(forms.Form):
         elif not sf and sp == 'all' and tx == 'all':
             raise forms.ValidationError('Select either Rab subfamily OR(and) species or taxon.')
 
+
+class RabProfileForm(forms.Form):
+    rab_subfamily = forms.ChoiceField(choices=[(x['rab_subfamily'], x['rab_subfamily']) for x in
+                                               Annotation.objects.values('rab_subfamily').distinct()],
+                                      label='Rab subfamily', required=False)
+    taxon = forms.ChoiceField(choices=filter_taxa(), label='Taxon', required=False)
+
+    def clean(self):
+        cleaned_data = super(RabProfileForm, self).clean()
+        sf = cleaned_data.get('rab_subfamily')
+        tx = cleaned_data.get('taxon')
+
+        if not all([sf, tx]):
+            raise forms.ValidationError('Select both Rab subfamily AND taxon.')
