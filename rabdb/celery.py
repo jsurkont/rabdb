@@ -7,9 +7,9 @@ from celery import Celery
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rabdb_sandbox.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rabdb.settings')
 
-app = Celery('rabdb_sandbox')
+app = Celery('rabdb')
 
 # Using a string here means the worker will not have to
 # pickle the object when using Windows.
