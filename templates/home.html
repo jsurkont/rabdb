@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB2 - Home{% endblock %}
+
+{% block content %}
+
+<h1>Welcome to RabDB2</h1>
+
+<p>RabDB is a database created to explore the universe of Rabs and Rab subfamilies predicted by the Rabifier
+    classification pipleline. The Rabifier has predicted thousands of novel Rabs, and assigned putative subfamiiles
+    to each of them. Here you can browse this universe, view evolutionary profiles, and
+    <a href="{% url 'rabifier:search' %}">submit your own sequences</a> to the Rabfifier to be classified to a subfamily.
+</p>
+
+<h2>Rabify</h2>
+
+<p><a href="{% url 'rabifier:search' %}">Submit a protein sequence</a> to find out if it is a Rab, and if so,
+    to what subfamily it belongs.
+</p>
+
+<h2>Browse and Profile Rabs</h2>
+
+<p>
+    <a href="/browse">Browse</a> the universe of Rabs across 244 species that have been analyzed by the Rabifier and
+    <a href="{% url 'browser:profile' %}">view their evolutionary profiles</a> across all major eukaryotic branches.
+
+</p>
+
+{% endblock %}

@@ -1,42 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB - Protein{% endblock %}
+
+{% block content %}
+
+<h1>Annotation</h1>
+
 {% if annotation %}
-<table>
+
+<table class="browser">
     <tr>
-        <td>Protein name</td>
+        <th>Species</th>
+        <td>{{ annotation.species }}</td>
+    </tr>
+    <tr>
+        <th>Protein name</th>
         <td>{{ annotation.protein }}</td>
     </tr>
     <tr>
-        <td>Gene name</td>
-        <td>{{ annotation.protein.gene }}</td>
+        <th>Gene name</th>
+        <td>{{ annotation.gene }}</td>
     </tr>
     <tr>
-        <td>Rab subfamily</td>
+        <th>Rab subfamily</th>
         <td>{{ annotation.rab_subfamily }}</td>
     </tr>
     <tr>
-        <td>Rab subfamily score</td>
+        <th>Rab subfamily score</th>
         <td>{{ annotation.rab_subfamily_score }}</td>
     </tr>
     <tr>
-        <td>G-protein domains</td>
+        <th>G-protein domains</th>
         <td>{{ annotation.gprotein }}</td>
     </tr>
     <tr>
-        <td>e-value against the rab database (log10)</td>
-        <td>{{ annotation.log10_evalue_rab }}</td>
+        <th>e-value vs. Rab database</th>
+        <td>{{ annotation.evalue_rab }}</td>
     </tr>
     <tr>
-        <td>e-value against the non-rab database (log10)</td>
-        <td>{{ annotation.log10_evalue_nonrab }}</td>
+        <th>e-value vs. non-Rab database</th>
+        <td>{{ annotation.evalue_non_rab }}</td>
     </tr>
     <tr>
-        <td>Rab F motifs</td>
+        <th>Rab F motifs</th>
         <td>{{ annotation.rabf }}</td>
     </tr>
     <tr>
-        <td>Top 5 Rab subfamily predictions</td>
-        <td>{{ annotation.rab_subfamily_top5 }}</td>
+        <th>Top 5 Rab subfamily predictions</th>
+        <td>{{ annotation.top5 }}</td>
     </tr>
 </table>
 {% else %}
 <p>No annotation.</p>
 {% endif %}
+
+{% endblock %}

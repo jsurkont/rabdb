@@ -1,10 +1,10 @@
-var width = 500,
+var width = 600,
     height = profile_info.leaf_number * 25;
 
 var tree = d3.layout.cluster()
     .size([height, width - 300]);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("div#content").append("svg")
     .attr("width", width)
     .attr("height", height)
   .append("g")

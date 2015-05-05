@@ -1,6 +1,6 @@
 import json
 
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, Http404, HttpResponse
@@ -34,8 +34,22 @@ def index(request):
 
 
 def details(request, **kwargs):
-    p = get_list_or_404(Annotation, protein__protein=kwargs['protein_id'])[0]
-    return render(request, 'browser/annotation.html', {'annotation': p})
+    ann = get_object_or_404(Annotation, protein__protein=kwargs['protein_id'])
+    data = {
+        'species': ann.taxonomy.name,
+        'protein': ann.protein,
+        'gene': ann.protein.gene,
+        'rab_subfamily': ann.rab_subfamily,
+        'rab_subfamily_score': '{:.2f}'.format(ann.rab_subfamily_score),
+        'gprotein': ann.gprotein,
+        'evalue_rab': '{:.1e}'.format(10**ann.log10_evalue_rab),
+        'evalue_non_rab': '{:.1e}'.format(10**ann.log10_evalue_nonrab) if ann.log10_evalue_nonrab else '>1e-10',
+        'rabf': ', '.join('({}, {}-{}, {})'.format(*x.split()) for x in ann.rabf.split('|')),
+        'top5': ', '.join('({}, {:.2g})'.format(*(float(y) if y[0].isdigit() else y for y in x.split()))
+                          for x in ann.rab_subfamily_top5.split('|'))
+    }
+    #annotation['log10_evalue_rab'] = math.log10(annotation['log10_evalue_rab'])
+    return render(request, 'browser/annotation.html', {'annotation': data})
 
 
 def browse(request, **kwargs):

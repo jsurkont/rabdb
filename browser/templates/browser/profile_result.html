@@ -1,11 +1,16 @@
-<head>
+{% extends "base.html" %}
+
+{% block title %}RabDB - Profile{% endblock %}
 
 {% load staticfiles %}
+{% block css %}
+{{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'browser/dendrogram.css' %}" />
+{% endblock %}
 
-</head>
+{% block content %}
 
-<body>
+<h1>Rab Profiles</h1>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
@@ -17,4 +22,5 @@ var profile_info = JSON.parse('{{ profile_info|safe }}');
  </script>
 
 <script src="{% static 'browser/dendrogram.js' %}"></script>
-</body>
+
+{% endblock %}

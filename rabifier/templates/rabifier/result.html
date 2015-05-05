@@ -1,8 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB - Rabifier Results{% endblock %}
+
+{% block content %}
+
 <h1>Result</h1>
 
-<p>ticket: {{ ticket }}</p>
+{# <p>ticket: {{ ticket }}</p> #}
 
-<p>Result:</p>
-<p>{{ result }}</p>
+<table class="browser">
+{% for k, x in result.items %}
+    <tr>
+        <th rowspan="{{ x|length }}">{{ k }}</th>
+        <td>Is rab?</td>
+        <td>{{ x.is_rab|safe }}</td>
+    </tr>
+    <tr>
+        <td>Rab subfamily</td>
+        <td>{{ x.rab_subfamily }}</td>
+    </tr>
+    <tr>
+        <td>Rab subfamily score</td>
+        <td>{{ x.rab_subfamily_score }}</td>
+    </tr>
+    <tr>
+        <td>G-protein domain regions</td>
+        <td>{{ x.g_protein }}</td>
+    </tr>
+    <tr>
+        <td>e-value vs. Rab database</td>
+        <td>{{ x.evalue_rab }}</td>
+    </tr>
+    <tr>
+        <td>e-value vs. non-Rab database</td>
+        <td>{{ x.evalue_non_rab }}</td>
+    </tr>
+    <tr>
+        <td>RabF motifs</td>
+        <td>{{ x.rabf }}</td>
+    </tr>
+    <tr>
+        <td>Top5 subfamilies</td>
+        <td>{{ x.top5 }}</td>
+    </tr>
+{% endfor %}
+</table>
 
-<p><a href="{% url 'rabifier:search' %}">Rabify again!</a></p>
+{# <p><a href="{% url 'rabifier:search' %}">Rabify again!</a></p> #}
+
+{% endblock %}

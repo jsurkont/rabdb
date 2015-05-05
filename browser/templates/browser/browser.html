@@ -1,5 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB - Browser{% endblock %}
+
+{% block content %}
+
+<h1>Rab Browser</h1>
+
 {% if annotations %}
-    <table>
+    <table class="browser">
+        <tr>
+            <th>Protein</th>
+            <th>Species</th>
+            <th>Annotation</th>
+        </tr>
         {% for annotation in annotations %}
             <tr>
                 <td><a href="{% url 'browser:details' annotation.protein.protein %}">{{ annotation.protein.protein }}</a></td>
@@ -27,3 +40,5 @@
         {% endif %}
     </span>
 </div>
+
+{% endblock %}

@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 
 BROKER_URL = 'amqp://jsurkont:1234@localhost:5672/myvhost'
 CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@localhost:5672/myvhost'
-CELERY_TASK_RESULT_EXPIRES = 30  # 3600 * 24 * 7
+CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
@@ -71,7 +71,7 @@ ROOT_URLCONF = 'rabdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,6 +129,9 @@ EMAIL_PORT = 1025
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Rabifier settings
 

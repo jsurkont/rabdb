@@ -17,7 +17,7 @@ def run_rabifier(sequences, **kwargs):
     proc = subprocess.Popen([settings.RABMYFIRE_PYTHON,
                              settings.RABMYFIRE_BIN,
                              seq_file.name,
-                             '--outfmt', 'text',
+                             '--outfmt', 'json',
                              '--bh_evalue', str(kwargs['evalue_rab']),
                              '--motif_evalue', str(kwargs['evalue_motif']),
                              '--motif_number', str(kwargs['num_motif']),

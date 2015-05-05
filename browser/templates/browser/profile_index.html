@@ -1,7 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB - Profile{% endblock %}
+
+{% block content %}
+
 <h1>Rab Profiles</h1>
+
+<p>Here you can profile all Rabs identified by the Rabifier in 244 genomes included in
+    <a href="http://www.ensembl.org">Ensembl</a> and <a href="http://ensemblgenomes.org">Ensembl Genomes</a>
+    databases.</p>
+
+<p>Select a Rab subfamily, and taxon of interest, and hit 'generate profile'.</p>
 
 <form action="{% url 'browser:profile' %}" method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Search" />
+    <table class="onlydropdown">{{ form.as_table }}</table>
+    <br>
+    <input type="submit" value="Generate profile" />
 </form>
+
+{% endblock %}

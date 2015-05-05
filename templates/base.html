@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}RabDB{% endblock %}</title>
+    {% load staticfiles %}
+    {% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/base.css' %}" />
+    {% endblock css %}
+    {% block headextras %}{% endblock %}
+</head>
+<body>
+
+<div id="header">
+    <div id="logo-rabdb-left"></div>
+    <div id="logo-rabdb-middle"></div>
+    <div id="logo-rabdb-right">
+        <a href="/">
+            {#<img id="mtoclogo" src="/media/static_content/images/logos/mtoc-explorer.png" alt="mtoc-explorer logo">#}
+            <a href="/" style="font-size:400%;text-decoration:none;color:black">RabDB2</a>
+        </a>
+            <a href="http://www.igc.gulbenkian.pt">
+        <img id="igclogo" src="/static/images/logos/igc_logo.jpg" alt="IGC logo">
+        </a>
+    </div>
+</div>
+
+<div id="leftsection">
+    <div id="sidebar">
+        <ul>
+            <li id="evocell" class="sidebar-header">
+                <a href="http://evocell.org">EVOCELL.ORG</a>
+                <div class="inner"> </div>
+            </li>
+        </ul>
+        <br>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+        <br>
+        <ul>
+            <li><a href="/browser">Browser</a></li>
+            <li><a href="{% url 'browser:profile' %}">Profile</a></li>
+            <li><a href="{% url 'rabifier:search' %}">Rabifier</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="rightsection">
+    <div id="main">
+        <div id="content">
+            <noscript> <p id="nojs_warning">It appears your browser does not support JavaScript, or it may be disabled. Please enable JavaScript to continue</p></noscript>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <div id="footer">
+        <p>&copy; 2015 <a href="http://www.igc.gulbenkian.pt" title="IGC">Instituto Gulbenkian de Ciência</a></p>
+    </div>
+</div>
+
+</body>
+</html>

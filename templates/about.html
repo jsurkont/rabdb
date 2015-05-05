@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB2 - About{% endblock %}
+
+{% block content %}
+
+<h1>About RabDB &amp; Rabfier</h1>
+
+<p><strong>RabDB2</strong> is a database containing information on Rab protein families found in over 244 fully
+    sequenced Eukaryotic genomes. The content has been generated using the
+    <a href="{% url 'rabifier:search' %}">Rabifier2 classification pipeline</a>. If you have any questions, comments or
+    suggestions about RabDB or the Rabifier don't hesitate to <a class='mailto' name="rabdb">contact us</a>.
+</p>
+<p><strong>Rabifier2</strong> is a Rab classification pipeline originally developed by Yoan Diekmann to identify
+    Rab proteins and classify them into subfamilies based on sequence.
+</p>
+<p>Reference: If Rabifier is useful in your research, please cite us.
+</p>
+<p> Thousands of Rab GTPases for the Cell Biologist.
+    Diekmann Y, <em> et al.</em>
+    PLoS Comput Biol 7(10): e1002217.
+    <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a>
+</p>
+
+<h2>Availability</h2>
+
+<p>The source code of the Rabifier2 classification pipeline and RabDB webservice is publicly available at GitHub.</p>
+
+<p>The Rabifier2 uses a manually curated set of Rab and non-Rab sequences to identify Rabs and classify them
+    into subfamilies, as well as a file representing the set of RabF motifs. These files can also be downloaded
+    from GitHub.
+</p>
+
+<h2>Creators</h2>
+
+<ul>
+    <li>Yoan Diekmann, Computational Genomics Laboratory, PhD Program in Computational Biology,
+    Instituto Gulbenkian de Ciencia, Portugal</li>
+    <li>Jaroslaw Surkont, Computational Genomics Laboratory, Instituto Gulbenkian de Ciencia, Portugal</li>
+    <li>Marc Gouw, Computational Genomics Laboratory, Instituto Gulbenkian de Ciencia, Portugal</li>
+    <li>Jose B. Pereira-Leal, Computational Genomics Laboratory, Instituto Gulbenkian de Ciencia, Portugal</li>
+</ul>
+
+{% endblock %}

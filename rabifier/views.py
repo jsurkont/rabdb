@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,8 +11,22 @@ from .tasks import run_rabifier
 def result(request, ticket):
     task = run_rabifier.AsyncResult(ticket)
     if task.ready():
-        value = task.get()
-        return render(request, 'rabifier/result.html', {'result': value, 'ticket': ticket})
+        value = json.loads(task.get())
+        result = {}
+        print(value)
+        for k, v in value.items():
+            l = {
+                'is_rab': '&#{}'.format(10004 if v['is_rab'] else 10008),
+                'rab_subfamily': v['rab_subfamily'][0] if v['rab_subfamily'][0] else '',
+                'rab_subfamily_score': '{:.2f}'.format(v['rab_subfamily'][1]) if v['rab_subfamily'][1] else '',
+                'g_protein': ', '.join(v['gprotein_domain_regions']),
+                'evalue_rab': '{:.1e}'.format(v['evalue_bh_rabs']) if v['evalue_bh_rabs'] else '',
+                'evalue_non_rab': '{:.1e}'.format(v['evalue_bh_non_rabs']) if v['evalue_bh_non_rabs'] else '',
+                'rabf': ', '.join('({}, {}-{}, {:.2e})'.format(*x) for x in v['rabf_motifs']),
+                'top5': ', '.join('({}, {:.2g})'.format(name, score) for name, score in v['rab_subfamily_top_5'])
+                }
+            result[v['id']] = l
+        return render(request, 'rabifier/result.html', {'result': result, 'ticket': ticket})
     else:
         return render(request, 'rabifier/status.html')
 

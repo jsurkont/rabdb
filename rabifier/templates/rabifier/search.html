@@ -1,7 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB2 - Rabifier2{% endblock %}
+
+{% block content %}
+
 <h1>Rabify!</h1>
 
 <form action="{% url 'rabifier:search' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>{{ form.as_table }}</table>
+    <br>
     <input type="submit" value="Rabify" />
 </form>
+
+{% endblock %}
