@@ -25,10 +25,13 @@
 <p>No rabs.</p>
 {% endif %}
 
-<div class="pagination">
+<br>
+
+<div class="pagination" style="text-align:center;">
     <span class="step-links">
         {% if annotations.has_previous %}
-            <a href="?page={{ annotations.previous_page_number }}{% if sf %}&amp;sf={{ sf }}{% endif %}">previous</a>
+            <a href="?page=1">&#8606; first</a>
+            <a href="?page={{ annotations.previous_page_number }}">&#8592; previous</a>
         {% endif %}
 
         <span class="current">
@@ -36,7 +39,8 @@
         </span>
 
         {% if annotations.has_next %}
-            <a href="?page={{ annotations.next_page_number }}{% if sf %}&amp;sf={{ sf }}{% endif %}">next</a>
+            <a href="?page={{ annotations.next_page_number }}">next &#8594;</a>
+            <a href="?page={{ annotations.paginator.num_pages }}">last &#8608;</a>
         {% endif %}
     </span>
 </div>

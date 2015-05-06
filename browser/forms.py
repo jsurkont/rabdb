@@ -19,7 +19,7 @@ def filter_taxa():
 
 
 class RabBrowserForm(forms.Form):
-    rab_subfamily = forms.ChoiceField(choices=[('', 'All')] + [(x['rab_subfamily'], x['rab_subfamily']) for x in
+    rab_subfamily = forms.ChoiceField(choices=[('all', 'All')] + [(x['rab_subfamily'], x['rab_subfamily']) for x in
                                                                Annotation.objects.values('rab_subfamily').distinct()],
                                       label='Rab subfamily', required=False)
     species = forms.ChoiceField(choices=[('all', 'All')] + [(x.taxon, x.name) for x in
@@ -38,7 +38,7 @@ class RabBrowserForm(forms.Form):
 
         if sp != 'all' and tx != 'all':
             raise forms.ValidationError('Select either species OR taxon')
-        elif not sf and sp == 'all' and tx == 'all':
+        elif all(x == 'all' for x in (sf, sp, tx)):
             raise forms.ValidationError('Select either Rab subfamily OR(and) species or taxon.')
 
 
