@@ -15,8 +15,7 @@
 <form action="{% url 'browser:profile' %}" method="post">
     {% csrf_token %}
     <table class="onlydropdown">{{ form.as_table }}</table>
-    <br>
-    <input type="submit" value="Generate profile" />
+    <p><input type="submit" value="Generate profile" /></p>
 </form>
 
 {% endblock %}

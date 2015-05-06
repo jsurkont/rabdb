@@ -31,9 +31,18 @@ def index(request):
 
 def details(request, **kwargs):
     ann = get_object_or_404(Annotation, protein__protein=kwargs['protein_id'])
+
+    if 'download' in request.GET:
+        response = HttpResponse(content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="{}.fasta"'.format(ann.protein.protein)
+        cut_seq = lambda s: '\n'.join(s[i: i+80] for i in range(0, len(s), 80))
+        response.write('>{} {} {}\n{}'.format(ann.protein.protein, ann.taxonomy.name.replace(' ', '_'),
+                                              ann.rab_subfamily, cut_seq(ann.protein.seq)))
+        return response
+
     data = {
         'species': ann.taxonomy.name,
-        'protein': ann.protein,
+        'protein': ann.protein.protein,
         'gene': ann.protein.gene,
         'rab_subfamily': ann.rab_subfamily,
         'rab_subfamily_score': '{:.2f}'.format(ann.rab_subfamily_score),
@@ -44,21 +53,25 @@ def details(request, **kwargs):
         'top5': ', '.join('({}, {:.2g})'.format(*(float(y) if y[0].isdigit() else y for y in x.split()))
                           for x in ann.rab_subfamily_top5.split('|')),
         'sequence': ann.protein.seq
-        #'sequence': '\n'.join(ann.protein.seq[i:i+80] for i in range(0, len(ann.protein.seq), 80))
     }
     return render(request, 'browser/annotation.html', {'annotation': data})
 
 
 def browse(request, **kwargs):
+    info = {}
     try:
         if kwargs['tax'] == 'all':
             annotations = Annotation.objects.all().order_by('taxonomy__name')
         else:
             annotations = Annotation.objects.filter(taxonomy__taxon=kwargs['tax'])
-            if not annotations:
+            if annotations:
+                info['taxon_name'] = annotations[0].taxonomy.name
+            else:
                 graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=kwargs['tax']))[0])
                 leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
+                info['taxon_name'] = [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0]
                 annotations = Annotation.objects.filter(taxonomy__taxon__in=leaves)
+
         sf = kwargs['sf']
         if sf != 'all':
             annotations = annotations.filter(rab_subfamily=sf)
@@ -66,6 +79,15 @@ def browse(request, **kwargs):
         raise Http404('No annotations')
     except NcbiTaxonomy.DoesNotExist:
         raise Http404('Taxon does not exist.')
+
+    if 'download' in request.GET:
+        response = HttpResponse(content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="{}.fasta"'.format(kwargs['tax'])
+        cut_seq = lambda s: '\n'.join(s[i: i+80] for i in range(0, len(s), 80))
+        sequences = ('>{} {} {}\n{}'.format(ann.protein.protein, ann.taxonomy.name.replace(' ', '_'),
+                                            ann.rab_subfamily, cut_seq(ann.protein.seq)) for ann in annotations)
+        response.write('\n'.join(sequences))
+        return response
 
     paginator = Paginator(annotations, 25, orphans=5)
     page = request.GET.get('page')
@@ -78,7 +100,7 @@ def browse(request, **kwargs):
         # If page is out of range (e.g. 9999), deliver last page of results.
         annotations = paginator.page(paginator.num_pages)
 
-    return render(request, 'browser/browser.html', {'annotations': annotations})
+    return render(request, 'browser/browser.html', {'annotations': annotations, 'info': info})
 
 
 def profile(request):

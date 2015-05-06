@@ -9,8 +9,7 @@
 <form action="{% url 'rabifier:search' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>{{ form.as_table }}</table>
-    <br>
-    <input type="submit" value="Rabify" />
+    <p><input type="submit" value="Rabify" /></p>
 </form>
 
 {% endblock %}

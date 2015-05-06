@@ -32,11 +32,10 @@ d3.json("/browser/profile/data/" + url_data, function(error, json) {
 
   node.append("circle")
       .attr("r", 4.5)
-      .style("fill", function(d) {
-        if (d.is_leaf) {
-            if (d.has_rab) { return "lime"; }
-            else { return "red"; }
-        } else { return "grey"; }
+      .attr("class", function(d) {
+        if (!d.is_leaf) {return "internal"}
+        else if (d.has_rab) { return "positive"; }
+        else { return "negative"; }
       })
       .on("mouseover", function(d) { d3.select(this).attr('r', 7); })
       .on("mouseout", function(d) { d3.select(this).attr('r', 4.5); })

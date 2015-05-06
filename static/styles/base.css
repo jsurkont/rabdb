@@ -217,6 +217,7 @@ body {
     color: #ffffff;
     height: 20px;
     padding-top: 5px;
+    margin-bottom: 20px;
 }
 
 /*#content h1, #content h1.image {
@@ -224,7 +225,7 @@ body {
     margin-bottom: 30px;
 }*/
 
-#content h1, h2 {
+#content h1 {
     background-attachment: scroll;
     background-clip: border-box;
     background:#33ad33;
@@ -240,16 +241,25 @@ body {
     background-size: auto auto;
 }
 
-#content h1 {
-    margin-bottom: 20px;
-}
-
 #content h2 {
     margin-top: 20px;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background: #94BD94;
+    background-image:url('../images/icons/h2-background.svg'), -webkit-gradient(linear, left, left, from(#94BD94), to(#b0b0b0));
+    background-image:url('../images/icons/h2-background.svg'), -webkit-linear-gradient(left, #94BD94, #b0b0b0);
+    background-image:url('../images/icons/h2-background.svg'), -moz-linear-gradient(left, #94BD94, #b0b0b0);
+    background-image:url('../images/icons/h2-background.svg'), -ms-linear-gradient(left, #94BD94, #b0b0b0);
+    background-image:url('../images/icons/h2-background.svg'), -o-linear-gradient(left, #94BD94, #b0b0b0);
+    background-image:url('../images/icons/h2-background.svg'), linear-gradient(left, #94BD94, #b0b0b0);
+    background-origin: padding-box;
+    background-position:right top;
+    background-repeat:no-repeat;
+    background-size: auto auto;
 }
 
 #content h3 {
-    border-bottom: 1px solid #6d6e70;
+    border-bottom: 1px solid #33ad33;
     color: #618080;
     margin: 40px 0 14px;
     padding-bottom: 2px;
@@ -304,6 +314,11 @@ body {
 }
 
 /* Tables */
+
+table {
+    padding: 10px 20px;
+}
+
 table.browser {
     table-layout: fixed;
     width: 100%;

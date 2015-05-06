@@ -4,6 +4,18 @@
   stroke-width: 1px;
 }
 
+.node circle.internal {
+    fill: grey;
+}
+
+.node circle.positive {
+    fill: #33ad33;
+}
+
+.node circle.negative {
+    fill: #cc0000;
+}
+
 .node {
   font: 16px sans-serif;
 }
