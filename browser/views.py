@@ -67,7 +67,7 @@ def browse(request, **kwargs):
     except NcbiTaxonomy.DoesNotExist:
         raise Http404('Taxon does not exist.')
 
-    paginator = Paginator(annotations, 25)
+    paginator = Paginator(annotations, 25, orphans=5)
     page = request.GET.get('page')
     try:
         annotations = paginator.page(page)

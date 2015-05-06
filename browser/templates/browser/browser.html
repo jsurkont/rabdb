@@ -27,22 +27,26 @@
 
 <br>
 
-<div class="pagination" style="text-align:center;">
-    <span class="step-links">
+<div id="pagination">
+    <ul>
         {% if annotations.has_previous %}
-            <a href="?page=1">&#8606; first</a>
-            <a href="?page={{ annotations.previous_page_number }}">&#8592; previous</a>
+            <li><a href="?page=1">&#10096;&#10096;</a></li>
+            <li><a href="?page={{ annotations.previous_page_number }}">&#10096;</a></li>
+        {% else %}
+            <li class="empty">&#10096;&#10096;</li>
+            <li class="empty">&#10096;</li>
         {% endif %}
 
-        <span class="current">
-            Page {{ annotations.number }} of {{ annotations.paginator.num_pages }}.
-        </span>
+        <li class="pagination-current">Page {{ annotations.number }} of {{ annotations.paginator.num_pages }}</li>
 
         {% if annotations.has_next %}
-            <a href="?page={{ annotations.next_page_number }}">next &#8594;</a>
-            <a href="?page={{ annotations.paginator.num_pages }}">last &#8608;</a>
+            <li><a href="?page={{ annotations.next_page_number }}">&#10097;</a></li>
+            <li><a href="?page={{ annotations.paginator.num_pages }}">&#10097;&#10097;</a></li>
+        {% else %}
+            <li class="empty">&#10097;</li>
+            <li class="empty">&#10097;&#10097;</li>
         {% endif %}
-    </span>
+    </ul>
 </div>
 
 {% endblock %}

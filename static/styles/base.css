@@ -5,7 +5,7 @@ html, body {
 }
 
 body {
-    font-family: "Arial",sans-serif;
+    font-family: "Arial", sans-serif;
     font-size: 14px;
     text-align: justify;
 }
@@ -227,12 +227,25 @@ body {
 #content h1, h2 {
     background-attachment: scroll;
     background-clip: border-box;
-    background-color: #33ad33;
-    background-image: url("../images/icons/h2-background.svg"), -moz-linear-gradient(left center , #33ad33, #6b966b);
+    background:#33ad33;
+    background-image:url('../images/icons/h2-background.svg'), -webkit-gradient(linear, left, left, from(#33ad33), to(#6b966b));
+    background-image:url('../images/icons/h2-background.svg'), -webkit-linear-gradient(left, #33ad33, #6b966b);
+    background-image:url('../images/icons/h2-background.svg'), -moz-linear-gradient(left, #33ad33, #6b966b);
+    background-image:url('../images/icons/h2-background.svg'), -ms-linear-gradient(left, #33ad33, #6b966b);
+    background-image:url('../images/icons/h2-background.svg'), -o-linear-gradient(left, #33ad33, #6b966b);
+    background-image:url('../images/icons/h2-background.svg'), linear-gradient(left, #33ad33, #6b966b);
     background-origin: padding-box;
-    background-position: right top;
-    background-repeat: no-repeat;
+    background-position:right top;
+    background-repeat:no-repeat;
     background-size: auto auto;
+}
+
+#content h1 {
+    margin-bottom: 20px;
+}
+
+#content h2 {
+    margin-top: 20px;
 }
 
 #content h3 {
@@ -330,4 +343,51 @@ table.onlydropdown th {
 
 table.onlydropdown td select {
     width: 300px;
+}
+
+/* Pagination */
+div#pagination {
+    text-align: center;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+div#pagination a:link, div#pagination a:visited, div#pagination li.empty {
+    display: block;
+    width: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+div#pagination a:link, div#pagination a:visited {
+    font-weight: bold;
+    background-color: #8dd18d;
+    text-decoration: none;
+}
+
+div#pagination a:hover, div#pagination a:active {
+    background-color: #558355;
+}
+
+div#pagination ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+div#pagination li {
+    float: left;
+    margin: 2px;
+}
+
+div#pagination li.pagination-current {
+    font-weight: bold;
+    display: block;
+    width: 100px;
+    padding: 5px;
+}
+
+div#pagination li.empty {
+    background-color: #a0a0a0;
 }
