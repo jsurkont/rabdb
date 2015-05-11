@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB - Rabifier Results{% endblock %}
+{% block title %}RabDB2 - Rabifier Results{% endblock %}
 
 {% block content %}
 
 <h1>Rabifier Results</h1>
 
-<p><a href="?download">Download results</a></p>
+<p>Results are available for 1 week, if you wish to access them later please save this URL
+    <a href="http://jason{{ request.path }}">http://jason{{ request.path }}</a></p>
+
+<p><a href="?download">Download results as CSV</a></p>
 
 <table class="browser">
 {% for k, x in result.items %}

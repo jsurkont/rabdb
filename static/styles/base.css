@@ -279,6 +279,19 @@ body {
     padding: 0;
 }
 
+#content ul#creators {
+    list-style-type: none;
+}
+
+#content ul#creators li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#content ul#creators li span:first-child {
+    font-weight: bold;
+}
+
 #content p {
     color: #6d6e70;
     margin: 10px 20px;
@@ -338,7 +351,7 @@ table th {
     width: 25%;
     padding-left: 10px;
     color: black;
-    background-color: #8dd18d;
+    /*background-color: #8dd18d;*/
 }
 
 /* Forms */
@@ -399,7 +412,7 @@ div#pagination li {
 div#pagination li.pagination-current {
     font-weight: bold;
     display: block;
-    width: 100px;
+    width: 120px;
     padding: 5px;
 }
 

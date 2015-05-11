@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB - Profile{% endblock %}
+{% block title %}RabDB - Profile | {{ info.sf|capfirst }} in {{ info.taxon_name }}{% endblock %}
 
 {% load staticfiles %}
 {% block css %}
@@ -11,6 +11,15 @@
 {% block content %}
 
 <h1>Rab Profiles</h1>
+
+<h2>{{ info.sf }} in {{ info.taxon_name }}</h2>
+
+<p>This is a profile This is a profile of {{ info.sf|capfirst }} in {{ info.taxon_name }}.
+    A <span style="color:#33ad33;">green dot</span> indicates that the species has at least one {{ info.sf|capfirst }}.
+    The tree is an approximate evolutionary tree based on NCBI taxonomy.</p>
+
+<p style="margin-bottom:30px;">Hover over any node to see the taxon name, click on any taxon to see all Rabs in
+    that taxon.</p>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 

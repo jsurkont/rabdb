@@ -23,6 +23,9 @@ def validate_fasta(text):
         if len(seq) < 20:
             raise forms.ValidationError('FASTA format error: Sequence %(seqid)s too short, sequences must have at least'
                                         ' 20 amino acids ', params={'seqid': seq.id})
+        if len(seq) > 5000:
+            raise forms.ValidationError('FASTA format error: Sequence %(seqid)s too long, sequences must have at most'
+                                        ' 5000 amino acids ', params={'seqid': seq.id})
     if len(ids) < 1:
         raise forms.ValidationError('Please input at least one FASTA formatted sequence')
     elif len(ids) > settings.RABMYFIRE_MAX_SEQUENCES:
@@ -31,14 +34,16 @@ def validate_fasta(text):
 
 
 class RabifyForm(forms.Form):
-    sequence = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows': 20, 'cols': 100}),
+    sequence = forms.CharField(widget=forms.widgets.Textarea(attrs={'rows': 20, 'cols': 80}),
                                required=False, label='Sequence(s)', validators=[validate_fasta])
     fastafile = forms.FileField(required=False)
 
     evalue_rab = forms.FloatField(
-        label='Rab e-value', initial=1e-10, help_text='e-value threshold for best hit search')
+        label='Rab e-value', initial=1e-10, min_value=1e-200, max_value=0.001,
+        help_text='e-value threshold for best hit search')
     evalue_motif = forms.FloatField(
-        label='Motif e-value', initial=1e-04, help_text='e-value threshold for motif search')
+        label='Motif e-value', initial=1e-04, min_value=1e-200, max_value=0.1,
+        help_text='e-value threshold for motif search')
     num_motif = forms.IntegerField(
         label='Number of Motifs', initial=1, min_value=0, max_value=5, help_text='minimum number of RabF motifs')
     identity = forms.FloatField(

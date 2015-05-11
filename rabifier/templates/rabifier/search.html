@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB2 - Rabifier2{% endblock %}
+{% block title %}RabDB2 - Rabifier{% endblock %}
 
 {% block content %}
 
 <h1>Rabify!</h1>
+
+<p>Sequence-based Rab classification. You can enter up to 500
+    <a href="http://en.wikipedia.org/wiki/FASTA_format">FASTA</a> formatted protein sequences for rabification.</p>
 
 <form action="{% url 'rabifier:search' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}

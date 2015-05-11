@@ -136,7 +136,7 @@ STATICFILES_DIRS = (
 # Rabifier settings
 
 # The maximum number of sequences a user is allowed to upload in one time. Used in rabify/forms.py
-RABMYFIRE_MAX_SEQUENCES = 5
+RABMYFIRE_MAX_SEQUENCES = 500
 MAX_UPLOAD_SIZE = 10 * 1024**2
 
 RABMYFIRE_BIN = '/home/jsurkont/lab/projects/03/rabifier/rabmyfire.py'

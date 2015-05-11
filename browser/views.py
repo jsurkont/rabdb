@@ -119,7 +119,9 @@ def profile_result(request, **kwargs):
     graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=kwargs['tax']))[0])
     leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
     profile_info = {'leaf_number': len(leaves)}
-    return render(request, 'browser/profile_result.html', {'profile_info': json.dumps(profile_info)})
+    info = {'taxon_name': [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0],
+            'sf': kwargs['sf']}
+    return render(request, 'browser/profile_result.html', {'profile_info': json.dumps(profile_info), 'info': info})
 
 
 def profile_data(request, **kwargs):
