@@ -1,21 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB - Profile{% endblock %}
+{% block title %}RabDB - Browser{% endblock %}
 
 {% block content %}
 
-<h1>Rab Profiles</h1>
+<h1>Rab Browser</h1>
 
-<p>Here you can profile all Rabs identified by the Rabifier in 244 genomes included in
+<p>Here you can browse all Rabs identified by the Rabifier in 244 genomes included in
     <a href="http://www.ensembl.org">Ensembl</a> and <a href="http://ensemblgenomes.org">Ensembl Genomes</a>
     databases.</p>
 
-<p>Select a Rab subfamily, and taxon of interest, and hit 'generate profile'.</p>
+<p>Select a Rab subfamily, and taxon of interest, and hit 'generate profile' to see a profile of presence and absence
+    of selected Rab in the taxonomic context.</p>
 
 <form action="{% url 'browser:profile' %}" method="post">
     {% csrf_token %}
     <table class="onlydropdown">{{ form.as_table }}</table>
-    <p><input type="submit" value="Generate profile" /></p>
+    <p><input type="submit" value="Generate profile" name="show_profile" /></p>
 </form>
+
+<p style="margin-top:30px;">You can also display a taxonomic tree for a given taxon to browse all Rabs present that
+    tree.</p>
+
+<form action="{% url 'browser:profile' %}" method="post">
+    {% csrf_token %}
+    <table class="onlydropdown">{{ form_tree.as_table }}</table>
+    <p><input type="submit" value="Show tree" name="show_tree" /></p>
+</form>
+
+<p style="margin-top:30px;">If you wish to browse Rabs in any other way please contact us.</p>
 
 {% endblock %}

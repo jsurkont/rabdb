@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB - Browser | {{ info.taxon_name }}{% endblock %}
+{% block title %}RabDB - Search | {{ info.taxon_name }}{% endblock %}
 
 {% block content %}
 
-<h1>Rab Browser</h1>
+<h1>Rab Search</h1>
 
 <h2>{{ info.taxon_name }}</h2>
 
-<p><a href="?download">Download sequences as FASTA</a></p>
-
 {% if annotations %}
+    <p><a href="?download">Download sequences as FASTA</a></p>
     <table class="browser">
         <tr>
             <th>Protein</th>
@@ -25,32 +24,36 @@
             </tr>
         {% endfor %}
     </table>
-{% else %}
-<p>No rabs.</p>
-{% endif %}
 
 <br>
 
 <div id="pagination">
     <ul>
         {% if annotations.has_previous %}
-            <li><a href="?page=1">&#10096;&#10096;</a></li>
-            <li><a href="?page={{ annotations.previous_page_number }}">&#10096;</a></li>
+        <li><a href="?page=1">&#10096;&#10096;</a></li>
+        <li><a href="?page={{ annotations.previous_page_number }}">&#10096;</a></li>
         {% else %}
-            <li class="empty">&#10096;&#10096;</li>
-            <li class="empty">&#10096;</li>
+        <li class="empty">&#10096;&#10096;</li>
+        <li class="empty">&#10096;</li>
         {% endif %}
 
         <li class="pagination-current">Page {{ annotations.number }} of {{ annotations.paginator.num_pages }}</li>
 
         {% if annotations.has_next %}
-            <li><a href="?page={{ annotations.next_page_number }}">&#10097;</a></li>
-            <li><a href="?page={{ annotations.paginator.num_pages }}">&#10097;&#10097;</a></li>
+        <li><a href="?page={{ annotations.next_page_number }}">&#10097;</a></li>
+        <li><a href="?page={{ annotations.paginator.num_pages }}">&#10097;&#10097;</a></li>
         {% else %}
-            <li class="empty">&#10097;</li>
-            <li class="empty">&#10097;&#10097;</li>
+        <li class="empty">&#10097;</li>
+        <li class="empty">&#10097;&#10097;</li>
         {% endif %}
     </ul>
 </div>
+
+{% else %}
+
+<p>No rabs</p>
+
+{% endif %}
+
 
 {% endblock %}

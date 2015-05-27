@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}RabDB - Taxonomy | {{ info.taxon_name }}{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'browser/dendrogram.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<h1>Taxonomy</h1>
+
+<h2>{{ info.taxon_name }}</h2>
+
+<p style="margin-bottom:30px;">This is an approximate evolutionary tree of {{ info.taxon_name }} based on
+    <a href="http://www.ncbi.nlm.nih.gov/taxonomy">NCBI taxonomy</a>. Hover over any node to see the taxon name,
+    click on any taxon to see all Rabs in that taxon.</p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>var profile_info = JSON.parse('{{ tree_info|safe }}');</script>
+
+<script src="{% static 'browser/dendrogram_taxonomy.js' %}"></script>
+
+{% endblock %}

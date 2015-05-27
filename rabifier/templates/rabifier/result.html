@@ -14,21 +14,48 @@
 <table class="browser">
 {% for k, x in result.items %}
     <tr>
-        <th rowspan="{{ x|length }}">{{ k }}</th>
+        <th rowspan="{{ x|length|add:-2 }}">{{ k }}</th>
         <td>Is rab?</td>
         <td>{{ x.is_rab|safe }}</td>
     </tr>
     <tr>
-        <td>Rab subfamily</td>
-        <td>{{ x.rab_subfamily }}</td>
-    </tr>
-    <tr>
-        <td>Rab subfamily score</td>
-        <td>{{ x.rab_subfamily_score }}</td>
+        <td>Rab subfamily (probability)</td>
+        <td>
+            <ul>
+                <li><strong>{{ x.rab_subfamily }}</strong></li>
+                {% for sf in x.top_subfamilies %}
+                <li>{{ sf }}</li>
+                {% endfor %}
+            </ul>
+        </td>
     </tr>
     <tr>
         <td>G-protein domain regions</td>
-        <td>{{ x.g_protein }}</td>
+        <td>
+            <svg width="{{ x.img_len|add:50 }}px" height="24px">
+                <line x1="0" y1="12" x2="{{ x.img_len }}px" y2="12" style="stroke:black;stroke-width:1" />
+                {% for domain in x.gprotein %}
+                <g>
+                    <title>{{ domain.range }} aa</title>
+                    <rect x="{{ domain.x1 }}" y="6" width="{{ domain.width }}" height="12" style="fill:#b33c30;stroke:#b33c30;"/>
+                </g>
+                {% endfor %}
+            </svg>
+        </td>
+    </tr>
+    <tr>
+        <td>RabF motifs</td>
+        <td>
+            <svg width="{{ x.img_len|add:50 }}px" height="24px">
+                <line x1="0" y1="12" x2="{{ x.img_len }}px" y2="12" style="stroke:black;stroke-width:1" />
+                {% for domain in x.rabf %}
+                <g>
+                    <title>{{ domain.range }} aa</title>
+                    <rect x="{{ domain.x1 }}" y="6" width="{{ domain.width }}" height="12" style="fill:grey;stroke:grey;"/>
+                </g>
+                {% endfor %}
+            </svg>
+        </td>
     </tr>
     <tr>
         <td>e-value vs. Rab database</td>
@@ -37,14 +64,6 @@
     <tr>
         <td>e-value vs. non-Rab database</td>
         <td>{{ x.evalue_non_rab }}</td>
-    </tr>
-    <tr>
-        <td>RabF motifs</td>
-        <td>{{ x.rabf }}</td>
-    </tr>
-    <tr>
-        <td>Top5 subfamilies</td>
-        <td>{{ x.top5 }}</td>
     </tr>
 {% endfor %}
 </table>

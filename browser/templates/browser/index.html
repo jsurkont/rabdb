@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}RabDB - Browser{% endblock %}
+{% block title %}RabDB - Search{% endblock %}
 
 {% block content %}
 
-<h1>Rab Browser</h1>
+<h1>Search</h1>
 
-<p>Here you can browse all Rabs identified by the <a href="{% url 'rabifier:search' %}">Rabifier2</a> in 244 genomes
+<p>Here you can search for all Rabs identified by the <a href="{% url 'rabifier:search' %}">Rabifier2</a> in 244 genomes
     from <a href="http://www.ensembl.org">Ensembl</a> and <a href="http://ensemblgenomes.org">Ensembl Genomes</a>
     databases.
 </p>
 
-<p>Select a Rab subfamily, species, or taxon of interest, and hit 'browse' to retrieve all Rabs and their annotation.
+<p>Select a Rab subfamily, species, or taxon of interest, and hit 'search' to retrieve all Rabs and their annotation.
 You can also search for all Rabs of one subfamily in a single species (e.g. all Rab11 in Homo Sapiens)
 or all Rabs of one subfamily in a Taxon (e.g all Rab11 in Metazoa).</p>
 
 <form action="{% url 'browser:index' %}" method="post">
     {% csrf_token %}
     <table class="onlydropdown">{{ form.as_table }}</table>
-    <p><input type="submit" value="Browse" /></p>
+    <p><input type="submit" value="Search" /></p>
 </form>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 import json
 import csv
+import math
 
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
@@ -35,15 +36,20 @@ def result(request, ticket):
 
         result = {}
         for k, v in value.items():
+            # Helper functions for drawing domains
+            MAX_IMG_LEN = 200.0
+            seq_len = len(v['sequence']['seq'])
+            rescale = lambda x: math.ceil(x * MAX_IMG_LEN / seq_len)
+            get_rectangle = lambda x: {'x1': rescale(x[0]), 'width': rescale(x[1] - x[0]), 'range': '{}-{}'.format(*x)}
             l = {
                 'is_rab': '&#{}'.format(10004 if v['is_rab'] else 10008),
-                'rab_subfamily': v['rab_subfamily'][0] if v['rab_subfamily'][0] else '',
-                'rab_subfamily_score': '{:.2f}'.format(v['rab_subfamily'][1]) if v['rab_subfamily'][1] else '',
-                'g_protein': ', '.join(v['gprotein_domain_regions']),
-                'evalue_rab': '{:.1e}'.format(v['evalue_bh_rabs']) if v['evalue_bh_rabs'] else '',
-                'evalue_non_rab': '{:.1e}'.format(v['evalue_bh_non_rabs']) if v['evalue_bh_non_rabs'] else '',
-                'rabf': ', '.join('({}, {}-{}, {:.2e})'.format(*x) for x in v['rabf_motifs']),
-                'top5': ', '.join('({}, {:.2g})'.format(name, score) for name, score in v['rab_subfamily_top_5'])
+                'rab_subfamily': '{} ({:.2f})'.format(*v['rab_subfamily']) if v['rab_subfamily'][0] else '---',
+                'top_subfamilies': ['{} ({:.2g})'.format(name, score) for name, score in v['rab_subfamily_top_5']][1:],
+                'evalue_rab': '{:.1e}'.format(v['evalue_bh_rabs']) if v['evalue_bh_rabs'] is not None else '> threshold',
+                'evalue_non_rab': '{:.1e}'.format(v['evalue_bh_non_rabs']) if v['evalue_bh_non_rabs'] is not None else '> threshold',
+                'rabf': [get_rectangle(x[1:3]) for x in v['rabf_motifs']],
+                'gprotein': [get_rectangle(map(int, gprot.split('-'))) for gprot in v['gprotein_domain_regions']],
+                'img_len': MAX_IMG_LEN
                 }
             result[v['id']] = l
         return render(request, 'rabifier/result.html', {'result': result})

@@ -18,12 +18,27 @@
     to what subfamily it belongs.
 </p>
 
-<h2>Browse and Profile Rabs</h2>
+<h2>Browse Rabs</h2>
 
 <p>
     <a href="/browser">Browse</a> the universe of Rabs across 244 species that have been analyzed by the Rabifier and
     <a href="{% url 'browser:profile' %}">view their evolutionary profiles</a> across all major eukaryotic branches.
-
 </p>
+
+<p>
+<a href="/browser"> <img src="/static/images/pictures/search.png" alt="Search" /> </a>
+<a href="{% url 'browser:profile' %}"> <img src="/static/images/pictures/browse.png" alt="Browser" /> </a>
+</p>
+
+<h2>Citation</h2>
+
+<p>If you use RabDB or Rabifier in you research please cite:</p>
+<ul>
+    <li>Thousands of Rab GTPases for the Cell Biologist.
+        Diekmann Y, <em> et al.</em>
+        PLoS Comput Biol 7(10): e1002217.
+        <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a></li>
+    <li>Rabifier2</li>
+</ul>
 
 {% endblock %}

@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^profile/$', views.profile, name='profile'),
     url(r'^profile/tax/(?P<tax>\d*)/sf/(?P<sf>\w*)/$', views.profile_result, name='profile_result'),
     url(r'^profile/data/tax/(?P<tax>\d*)/sf/(?P<sf>\w*)/$', views.profile_data, name='profile_data'),
+    url(r'^taxonomy/(?P<tax>\d*)/$', views.taxonomy, name='taxonomy'),
+    url(r'^taxonomy/data/(?P<tax>\d*)/$', views.taxonomy_data, name='taxonomy_data'),
 ]

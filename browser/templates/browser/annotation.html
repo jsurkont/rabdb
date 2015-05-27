@@ -17,23 +17,50 @@
     </tr>
     <tr>
         <th>Protein name</th>
-        <td>{{ annotation.protein }}</td>
+        <td><a href="http://ensemblgenomes.org/id/{{ annotation.protein }}">{{ annotation.protein }}</a></td>
     </tr>
     <tr>
         <th>Gene name</th>
-        <td>{{ annotation.gene }}</td>
+        <td><a href="http://ensemblgenomes.org/id/{{ annotation.gene }}">{{ annotation.gene }}</a></td>
     </tr>
     <tr>
-        <th>Rab subfamily</th>
-        <td>{{ annotation.rab_subfamily }}</td>
-    </tr>
-    <tr>
-        <th>Rab subfamily score</th>
-        <td>{{ annotation.rab_subfamily_score }}</td>
+        <th>Rab subfamily (probability)</th>
+        <td>
+            <ul>
+                <li><strong>{{ annotation.rab_subfamily }}</strong></li>
+                {% for sf in annotation.top_subfamilies %}
+                    <li>{{ sf }}</li>
+                {% endfor %}
+            </ul>
+        </td>
     </tr>
     <tr>
         <th>G-protein domains</th>
-        <td>{{ annotation.gprotein }}</td>
+        <td>
+            <svg width="{{ annotation.img_len|add:50 }}px" height="24px">
+                <line x1="0" y1="12" x2="{{ annotation.img_len }}px" y2="12" style="stroke:black;stroke-width:1" />
+                {% for domain in annotation.gprotein %}
+                <g>
+                    <title>{{ domain.range }} aa</title>
+                    <rect x="{{ domain.x1 }}" y="6" width="{{ domain.width }}" height="12" style="fill:#b33c30;stroke:#b33c30;"/>
+                </g>
+                {% endfor %}
+            </svg>
+        </td>
+    </tr>
+    <tr>
+        <th>Rab F motifs</th>
+        <td>
+            <svg width="{{ annotation.img_len|add:50 }}px" height="24px">
+                <line x1="0" y1="12" x2="{{ annotation.img_len }}px" y2="12" style="stroke:black;stroke-width:1" />
+                {% for domain in annotation.rabf %}
+                <g>
+                    <title>{{ domain.range }} aa</title>
+                <rect x="{{ domain.x1 }}" y="6" width="{{ domain.width }}" height="12" style="fill:grey;stroke:grey;"/>
+                </g>
+                {% endfor %}
+            </svg>
+        </td>
     </tr>
     <tr>
         <th>e-value vs. Rab database</th>
@@ -42,14 +69,6 @@
     <tr>
         <th>e-value vs. non-Rab database</th>
         <td>{{ annotation.evalue_non_rab }}</td>
-    </tr>
-    <tr>
-        <th>Rab F motifs</th>
-        <td>{{ annotation.rabf }}</td>
-    </tr>
-    <tr>
-        <th>Top 5 Rab subfamily predictions</th>
-        <td>{{ annotation.top5 }}</td>
     </tr>
     <tr>
         <th>Sequence</th>
