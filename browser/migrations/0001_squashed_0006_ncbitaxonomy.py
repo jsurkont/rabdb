@@ -6,6 +6,8 @@ from django.db import models, migrations
 
 class Migration(migrations.Migration):
 
+    replaces = [(b'browser', '0001_initial'), (b'browser', '0002_auto_20150422_1145'), (b'browser', '0003_ncbi_taxonomy'), (b'browser', '0004_auto_20150422_1804'), (b'browser', '0005_auto_20150422_1847'), (b'browser', '0006_ncbitaxonomy')]
+
     dependencies = [
     ]
 
@@ -56,5 +58,25 @@ class Migration(migrations.Migration):
             model_name='annotation',
             name='taxonomy',
             field=models.ForeignKey(to='browser.Taxonomy'),
+        ),
+        migrations.AlterField(
+            model_name='annotation',
+            name='log10_evalue_nonrab',
+            field=models.FloatField(null=True, blank=True),
+        ),
+        migrations.CreateModel(
+            name='NcbiTaxonomy',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('path', models.CharField(unique=True, max_length=255)),
+                ('depth', models.PositiveIntegerField()),
+                ('numchild', models.PositiveIntegerField(default=0)),
+                ('taxon_id', models.IntegerField(unique=True)),
+                ('node_rank', models.CharField(max_length=64)),
+                ('taxon_name', models.CharField(max_length=128)),
+            ],
+            options={
+                'abstract': False,
+            },
         ),
     ]
