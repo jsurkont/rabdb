@@ -7,7 +7,7 @@ from .models import Taxonomy, Protein, Annotation, NcbiTaxonomy
 
 class TaxonomyAdmin(admin.ModelAdmin):
     #fields = ['taxon', 'name', 'group']
-    list_display = ('taxon', 'name', 'name_common', 'group')
+    list_display = ('taxon', 'name', 'name_common')
 
 
 class AnnotationAdmin(admin.ModelAdmin):

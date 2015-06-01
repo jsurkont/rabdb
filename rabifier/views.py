@@ -28,7 +28,7 @@ def result(request, ticket):
                     v['rab_subfamily'][1] if v['rab_subfamily'][1] else '',
                     '|'.join(v['gprotein_domain_regions']),
                     v['evalue_bh_rabs'] if v['evalue_bh_rabs'] else '',
-                    v['evalue_bh_non_rabs'] if v['evalue_bh_non_rabs'] else '',
+                    v['evalue_bh_non_rabs'] if v['evalue_bh_non_rabs'] is not None else '',
                     '|'.join('{} {} {} {:.2e}'.format(*x) for x in v['rabf_motifs']),
                     '|'.join('{} {:.2e}'.format(name, score) for name, score in v['rab_subfamily_top_5'])
                 ])

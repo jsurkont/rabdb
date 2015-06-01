@@ -1,5 +1,6 @@
 import json
 import math
+import re
 
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -71,7 +72,9 @@ def browse(request, **kwargs):
         if kwargs['tax'] == 'all':
             annotations = Annotation.objects.all().order_by('taxonomy__name')
         else:
-            annotations = Annotation.objects.filter(taxonomy__taxon=kwargs['tax'])
+            annotations = sorted(Annotation.objects.filter(taxonomy__taxon=kwargs['tax']),
+                                 key=lambda ann: [int(c) if c.isdigit() else c.lower() for c in
+                                                  re.split('([0-9]+)', ann.rab_subfamily)])
             if annotations:
                 info['taxon_name'] = annotations[0].taxonomy.name
             else:
@@ -79,6 +82,9 @@ def browse(request, **kwargs):
                 leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
                 info['taxon_name'] = [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0]
                 annotations = Annotation.objects.filter(taxonomy__taxon__in=leaves)
+
+        #annotations = sorted(annotations, key=lambda ann: [int(c) if c.isdigit() else c.lower() for c in
+        #                                                   re.split('([0-9]+)', ann.rab_subfamily)])
 
         sf = kwargs['sf']
         if sf != 'all':

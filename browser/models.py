@@ -14,7 +14,6 @@ class Taxonomy(models.Model):
     taxon = models.IntegerField(unique=True)
     name = models.CharField(max_length=128, unique=True)
     name_common = models.CharField(max_length=128, blank=True)
-    group = models.CharField(max_length=32)
 
     def __unicode__(self):
         return str(self.taxon)
