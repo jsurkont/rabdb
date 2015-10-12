@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from networkx.readwrite import json_graph
 
-from .models import Annotation, NcbiTaxonomy
+from .models import Annotation, NcbiTaxonomy, Taxonomy
 from .forms import RabBrowserForm, RabProfileForm, TaxonomyTreeForm
 
 
@@ -67,28 +67,29 @@ def details(request, **kwargs):
 
 
 def browse(request, **kwargs):
-    info = {}
+    info = {'rab': kwargs['sf']}
     try:
         if kwargs['tax'] == 'all':
-            annotations = Annotation.objects.all().order_by('taxonomy__name')
+            if kwargs['sf'] != 'all':
+                annotations = Annotation.objects.all().order_by('taxonomy__name').filter(rab_subfamily=kwargs['sf'])
+            else:
+                annotations = Annotation.objects.all().order_by('taxonomy__name')
         else:
-            annotations = sorted(Annotation.objects.filter(taxonomy__taxon=kwargs['tax']),
-                                 key=lambda ann: [int(c) if c.isdigit() else c.lower() for c in
-                                                  re.split('([0-9]+)', ann.rab_subfamily)])
+            annotations = Annotation.objects.filter(taxonomy__taxon=kwargs['tax'])
             if annotations:
-                info['taxon_name'] = annotations[0].taxonomy.name
+                info['taxon_name'] = Taxonomy.objects.get(taxon=kwargs['tax']).name
+                if kwargs['sf'] != 'all':
+                    annotations = annotations.filter(rab_subfamily=kwargs['sf'])
+                annotations = sorted(annotations, key=lambda ann: [int(c) if c.isdigit() else c.lower() for c in
+                                                                   re.split('([0-9]+)', ann.rab_subfamily)])
             else:
                 graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=kwargs['tax']))[0])
                 leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
                 info['taxon_name'] = [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0]
                 annotations = Annotation.objects.filter(taxonomy__taxon__in=leaves)
+                if kwargs['sf'] != 'all':
+                    annotations = annotations.filter(rab_subfamily=kwargs['sf'])
 
-        #annotations = sorted(annotations, key=lambda ann: [int(c) if c.isdigit() else c.lower() for c in
-        #                                                   re.split('([0-9]+)', ann.rab_subfamily)])
-
-        sf = kwargs['sf']
-        if sf != 'all':
-            annotations = annotations.filter(rab_subfamily=sf)
     except Annotation.DoesNotExist:
         raise Http404('No annotations')
     except NcbiTaxonomy.DoesNotExist:
