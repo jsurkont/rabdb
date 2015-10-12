@@ -2,6 +2,8 @@
 
 {% block title %}RabDB2 - About{% endblock %}
 
+{% load staticfiles %}
+
 {% block content %}
 
 <h1>About RabDB &amp; Rabfier</h1>
@@ -37,10 +39,10 @@
 
 <table class="creators">
     <tr>
-        <td><img src="/static/images/pictures/ydiekmann.jpg" alt="Yoan Diekmann"></td>
-        <td><img src="/static/images/pictures/jsurkont.jpg" alt="Jaroslaw Surkont"></td>
-        <td><img src="/static/images/pictures/mgouw.jpg" alt="Marc Gouw"></td>
-        <td><img src="/static/images/pictures/jleal.jpg" alt="Jose Pereira Leal"></td>
+        <td><img src="{% static 'images/pictures/ydiekmann.jpg' %}" alt="Yoan Diekmann"></td>
+        <td><img src="{% static 'images/pictures/jsurkont.jpg' %}" alt="Jaroslaw Surkont"></td>
+        <td><img src="{% static 'images/pictures/mgouw.jpg' %}" alt="Marc Gouw"></td>
+        <td><img src="{% static 'images/pictures/jleal.jpg' %}" alt="Jose Pereira Leal"></td>
     </tr>
     <tr>
         <td>Yoan Diekmann</td>
