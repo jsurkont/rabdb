@@ -26,7 +26,7 @@ def result(request, ticket):
                     v['is_rab'],
                     v['rab_subfamily'][0] if v['rab_subfamily'][0] else '',
                     v['rab_subfamily'][1] if v['rab_subfamily'][1] else '',
-                    '|'.join(v['gprotein_domain_regions']),
+                    '|'.join(v['gdomain_regions']),
                     v['evalue_bh_rabs'] if v['evalue_bh_rabs'] else '',
                     v['evalue_bh_non_rabs'] if v['evalue_bh_non_rabs'] is not None else '',
                     '|'.join('{} {} {} {:.2e}'.format(*x) for x in v['rabf_motifs']),
@@ -48,7 +48,7 @@ def result(request, ticket):
                 'evalue_rab': '{:.1e}'.format(v['evalue_bh_rabs']) if v['evalue_bh_rabs'] is not None else '> threshold',
                 'evalue_non_rab': '{:.1e}'.format(v['evalue_bh_non_rabs']) if v['evalue_bh_non_rabs'] is not None else '> threshold',
                 'rabf': [get_rectangle(x[1:3]) for x in v['rabf_motifs']],
-                'gprotein': [get_rectangle(map(int, gprot.split('-'))) for gprot in v['gprotein_domain_regions']],
+                'gprotein': [get_rectangle(map(int, gprot.split('-'))) for gprot in v['gdomain_regions']],
                 'img_len': MAX_IMG_LEN
                 }
             result[v['id']] = l

@@ -62,7 +62,7 @@ class RabminerReader(object):
                                                  description=b['sequence']['header'], seq=b['sequence']['seq'])
                         protein_record.save()
                         annotation_record = Annotation(protein=protein_record, taxonomy=taxonomy_record,
-                                                       gprotein=' '.join(b['gprotein_domain_regions']),
+                                                       gprotein=' '.join(b['gdomain_regions']),
                                                        log10_evalue_rab=math.log10(b['evalue_bh_rabs']) if b['evalue_bh_rabs'] > 0 else b['evalue_bh_rabs'],
                                                        log10_evalue_nonrab=None if b['evalue_bh_non_rabs'] is None else 0 if b['evalue_bh_non_rabs'] == 0 else math.log10(b['evalue_bh_non_rabs']),
                                                        rabf='|'.join(' '.join(map(str, x)) for x in b['rabf_motifs']),

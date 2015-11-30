@@ -29,8 +29,8 @@ ALLOWED_HOSTS = []
 
 # Celery settings
 
-BROKER_URL = 'amqp://jsurkont:1234@localhost:5672/myvhost'
-CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@localhost:5672/myvhost'
+BROKER_URL = 'amqp://jsurkont:1234@172.22.50.130:5672/myvhost'
+CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@172.22.50.130:5672/myvhost'
 CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
 
 #: Only add pickle to this list if your broker is secured
@@ -51,7 +51,7 @@ INSTALLED_APPS = (
     'djcelery',
     'treebeard',
     #'kombu.transport.django',
-    'rabifier',
+    'rabifier_app',
     'browser',
 )
 
@@ -138,6 +138,3 @@ STATICFILES_DIRS = (
 # The maximum number of sequences a user is allowed to upload in one time. Used in rabify/forms.py
 RABMYFIRE_MAX_SEQUENCES = 500
 MAX_UPLOAD_SIZE = 10 * 1024**2
-
-RABMYFIRE_BIN = '/home/jsurkont/lab/projects/03/rabifier/rabmyfire.py'
-RABMYFIRE_PYTHON = '/home/jsurkont/.virtualenv/virtual/bin/python'
