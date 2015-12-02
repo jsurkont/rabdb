@@ -25,8 +25,6 @@ SECRET_KEY = 'v)gz16nex_!1s$zsg&aiax=j4+6#op8v!+a^sd0m(g)#n5ps_r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 # Celery settings
 
 BROKER_URL = 'amqp://jsurkont:1234@172.22.50.130:5672/myvhost'
@@ -50,7 +48,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djcelery',
     'treebeard',
-    #'kombu.transport.django',
     'rabifier_app',
     'browser',
 )
@@ -105,36 +102,27 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Europe/Lisbon'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'rabdb@igc'
-#EMAIL_HOST_PASSWORD = ''
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
+# Email
+
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-# Rabifier settings
 
-# The maximum number of sequences a user is allowed to upload in one time. Used in rabify/forms.py
-RABMYFIRE_MAX_SEQUENCES = 500
-MAX_UPLOAD_SIZE = 10 * 1024**2
+# Rabifier settings, used by rabifier_app
+
+RABMYFIRE_MAX_SEQUENCES = 500  # max number of sequences for upload
+MAX_UPLOAD_SIZE = 10 * 1024**2  # max upload file size
