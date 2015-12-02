@@ -5,7 +5,7 @@
 }
 
 .node circle.internal {
-    fill: grey;
+    fill: SteelBlue;
 }
 
 .node circle.positive {

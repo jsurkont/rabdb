@@ -48,7 +48,7 @@ def result(request, ticket):
                 'evalue_rab': '{:.1e}'.format(v['evalue_bh_rabs']) if v['evalue_bh_rabs'] is not None else '> threshold',
                 'evalue_non_rab': '{:.1e}'.format(v['evalue_bh_non_rabs']) if v['evalue_bh_non_rabs'] is not None else '> threshold',
                 'rabf': [get_rectangle(x[1:3]) for x in v['rabf_motifs']],
-                'gprotein': [get_rectangle(map(int, gprot.split('-'))) for gprot in v['gdomain_regions']],
+                'gprotein': [get_rectangle(list(map(int, gprot.split('-')))) for gprot in v['gdomain_regions']],
                 'img_len': MAX_IMG_LEN
                 }
             result[v['id']] = l

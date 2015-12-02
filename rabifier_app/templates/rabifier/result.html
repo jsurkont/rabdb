@@ -22,9 +22,9 @@
         <td>Rab subfamily (probability)</td>
         <td>
             <ul>
-                <li><strong>{{ x.rab_subfamily }}</strong></li>
+                <li><strong>{{ x.rab_subfamily|capfirst }}</strong></li>
                 {% for sf in x.top_subfamilies %}
-                <li>{{ sf }}</li>
+                <li>{{ sf|capfirst }}</li>
                 {% endfor %}
             </ul>
         </td>

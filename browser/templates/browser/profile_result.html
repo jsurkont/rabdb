@@ -24,13 +24,15 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
-<script>
-var profile_info = JSON.parse('{{ profile_info|safe }}');
-//var profile_info = JSON.parse('"foo"');
-//document.write("hello");
-//document.write(profile_info.leaf_number);
- </script>
-
+<script>var data = JSON.parse('{{ data|safe }}');</script>
 <script src="{% static 'browser/dendrogram.js' %}"></script>
+<script>
+    svg.selectAll('circle')
+        .attr("class", function(d) {
+            if (d.children) {return "internal"; }
+            else if (d.has_rab) { return "positive"; }
+            else { return "negative"; }
+        })
+</script>
 
 {% endblock %}

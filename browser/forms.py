@@ -13,7 +13,7 @@ def natural_sort(l):
 
 
 def get_rab_sf():
-    return [(x, x.title()) for x in natural_sort(
+    return [(x, x[0].upper() + x[1:]) for x in natural_sort(
         [ann['rab_subfamily'] for ann in Annotation.objects.values('rab_subfamily').distinct()])]
 
 

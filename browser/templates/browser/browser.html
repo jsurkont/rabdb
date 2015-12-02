@@ -20,7 +20,7 @@
             <tr>
                 <td><a href="{% url 'browser:details' annotation.protein.protein %}">{{ annotation.protein.protein }}</a></td>
                 <td>{{ annotation.taxonomy.name }}</td>
-                <td>{{ annotation.rab_subfamily }}</td>
+                <td>{{ annotation.rab_subfamily|capfirst }}</td>
             </tr>
         {% endfor %}
     </table>
@@ -51,7 +51,7 @@
 
 {% else %}
 
-<p>No {{ info.rab|title }} in {{ info.taxon_name }}</p>
+<p>No {{ info.rab|capfirst }} in {{ info.taxon_name }}</p>
 
 {% endif %}
 

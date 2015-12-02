@@ -52,15 +52,16 @@ def details(request, **kwargs):
         'species': ann.taxonomy.name,
         'protein': ann.protein.protein,
         'gene': ann.protein.gene,
-        'rab_subfamily': ann.rab_subfamily.title() + ' ({:.2f})'.format(ann.rab_subfamily_score),
-        'top_subfamilies': ['{} ({:.2g})'.format(*(float(y) if y[0].isdigit() else y.title() for y in x.split()))
+        'rab_subfamily': '{}{} ({:.2f})'.format(ann.rab_subfamily[0].upper(), ann.rab_subfamily[1:],
+                                                 ann.rab_subfamily_score),
+        'top_subfamilies': ['{} ({:.2g})'.format(*(float(y) if y[0].isdigit() else y[0].upper() + y[1:] for y in x.split()))
                             for x in ann.rab_subfamily_top5.split('|')][1:],
         'evalue_rab': '0' if ann.log10_evalue_rab < -323 else '{:.1e}'.format(10**ann.log10_evalue_rab),
         'evalue_non_rab': '>1e-10' if ann.log10_evalue_nonrab is None else '0' if ann.log10_evalue_nonrab < -323 else '{:.1e}'.format(10**ann.log10_evalue_nonrab),
         'rabf_text': ', '.join('({}, {}-{}, {})'.format(*x.split()) for x in ann.rabf.split('|')),
-        'rabf': [get_rectangle(map(int, x.split()[1:3])) for x in ann.rabf.split('|')],
+        'rabf': [get_rectangle(list(map(int, x.split()[1:3]))) for x in ann.rabf.split('|')],
         'sequence': ann.protein.seq,
-        'gprotein': [get_rectangle(map(int, gprot.split('-'))) for gprot in ann.gprotein.split()],
+        'gprotein': [get_rectangle(list(map(int, gprot.split('-')))) for gprot in ann.gprotein.split()],
         'img_len': MAX_IMG_LEN
     }
     return render(request, 'browser/annotation.html', {'annotation': data})
@@ -140,15 +141,8 @@ def profile(request):
 
 def profile_result(request, **kwargs):
     graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(get_object_or_404(NcbiTaxonomy, taxon_id=kwargs['tax']))[0])
-    leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
-    profile_info = {'leaf_number': len(leaves)}
     info = {'taxon_name': [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0],
             'sf': kwargs['sf']}
-    return render(request, 'browser/profile_result.html', {'profile_info': json.dumps(profile_info), 'info': info})
-
-
-def profile_data(request, **kwargs):
-    graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=kwargs['tax']))[0])
     tax = int(kwargs['tax'])
     root_node = None
     for node, node_data in graph.nodes_iter(data=True):
@@ -161,34 +155,22 @@ def profile_data(request, **kwargs):
     leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
     taxa_with_rab = {x.taxonomy.taxon for x in
                      Annotation.objects.filter(taxonomy__taxon__in=leaves).filter(rab_subfamily=kwargs['sf'])}
-
     for node in graph.nodes_iter():
         graph.node[node]['has_rab'] = True if graph.node[node]['data']['taxon_id'] in taxa_with_rab else False
         graph.node[node]['browse_rabs_url'] = '/browser/tax/{}/sf/{}'.format(graph.node[node]['data']['taxon_id'],
-                                                                              kwargs['sf'])
+                                                                             kwargs['sf'])
         graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
-        if graph.out_degree([node])[node] == 0:
-            graph.node[node]['is_leaf'] = True
-        else:
-            graph.node[node]['is_leaf'] = False
         del(graph.node[node]['data'])
-    return HttpResponse(json.dumps(json_graph.tree_data(graph, root_node)))
+    return render(request, 'browser/profile_result.html',
+                  {'info': info, 'data': json.dumps(json_graph.tree_data(graph, root_node))})
 
 
 def taxonomy(request, **kwargs):
     graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(get_object_or_404(NcbiTaxonomy, taxon_id=kwargs['tax']))[0])
-    leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
-    tree_info = {'leaf_number': len(leaves)}
     info = {'taxon_name': [graph.node[x]['data']['taxon_name'] for x, d, in graph.in_degree().items() if d == 0][0]}
-    return render(request, 'browser/taxonomy.html', {'tree_info': json.dumps(tree_info), 'info': info})
-
-
-def taxonomy_data(request, **kwargs):
-    graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=kwargs['tax']))[0])
-    tax = int(kwargs['tax'])
     root_node = None
     for node, node_data in graph.nodes_iter(data=True):
-        if node_data['data']['taxon_id'] == tax:
+        if node_data['data']['taxon_id'] == int(kwargs['tax']):
             root_node = node
             break
     if not root_node:
@@ -197,9 +179,7 @@ def taxonomy_data(request, **kwargs):
     for node in graph.nodes_iter():
         graph.node[node]['browse_rabs_url'] = '/browser/tax/{}/sf/all'.format(graph.node[node]['data']['taxon_id'])
         graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
-        if graph.out_degree([node])[node] == 0:
-            graph.node[node]['is_leaf'] = True
-        else:
-            graph.node[node]['is_leaf'] = False
         del(graph.node[node]['data'])
-    return HttpResponse(json.dumps(json_graph.tree_data(graph, root_node)))
+
+    return render(request, 'browser/taxonomy.html',
+                  {'info': info, 'data': json.dumps(json_graph.tree_data(graph, root_node))})

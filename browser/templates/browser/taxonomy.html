@@ -20,8 +20,7 @@
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
-<script>var profile_info = JSON.parse('{{ tree_info|safe }}');</script>
-
-<script src="{% static 'browser/dendrogram_taxonomy.js' %}"></script>
+<script>var data = JSON.parse('{{ data|safe }}');</script>
+<script src="{% static 'browser/dendrogram.js' %}"></script>
 
 {% endblock %}
