@@ -25,7 +25,10 @@ def run_rabifier(sequences, **kwargs):
     out = json.dumps({putative_rab.seqrecord.id: putative_rab.to_dict() for putative_rab in classifier(seq_file.name)})
 
     if kwargs.get('email', None):
-        send_mail('Your Rab predictions are ready',
-                  'To check you Rab predictions follow this link http://localhost:8000/rabifier_app/{}'.format(run_rabifier.request.id),
-                  settings.EMAIL_HOST_USER, [kwargs['email']])
+        send_mail('RabDB: your Rab predictions are ready',
+                  'To check you Rab predictions follow this link http://rabdb.org/rabifier/{}'.format(
+                      run_rabifier.request.id),
+                  'RabDB <{}@igc.gulbenkian.pt>'.format(settings.EMAIL_HOST_USER),
+                  [kwargs['email']]
+                  )
     return out

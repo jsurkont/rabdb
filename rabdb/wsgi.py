@@ -1,5 +1,5 @@
 """
-WSGI config for rabdb_sandbox project.
+WSGI config for rabdb project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rabdb_sandbox.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rabdb.settings")
 
 application = get_wsgi_application()

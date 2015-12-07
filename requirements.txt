@@ -1,0 +1,10 @@
+amqp
+biopython
+celery
+django>=1.8,<1.9
+django-celery
+django-treebeard
+ete2
+networkx
+psycopg2
+rabifier

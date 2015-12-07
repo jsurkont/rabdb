@@ -14,11 +14,11 @@ from browser.models import Annotation, Taxonomy, Protein, NcbiTaxonomy
 
 class Command(BaseCommand):
     help = "Populate tables from Rabifier predictions. " \
-           "Rab predictions should be organized as a set of jason files (output of Rabifier), in a single directory. " \
+           "Rab predictions should be organized as a set of json files (output of Rabifier), in a single directory. " \
            "Each file contains Rab predictions for a single species, file name should correspond to the species' " \
            "taxon id e.g. for human '9606.json'. Only positive predictions (i.e. putative Rabs) are included in " \
            "the database). " \
-           "Taxonomy is build based on the NCBI taxonomy using ete2 module, some files are downloaded to the $HOME, " \
+           "Taxonomy is build based on the NCBI taxonomy using ete2 module, some files are downloaded to $HOME, " \
            "check http://pythonhosted.org/ete2/tutorial/tutorial_ncbitaxonomy.html for more details."
 
     def add_arguments(self, parser):
@@ -26,10 +26,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         rr = RabminerReader(options['path'])
-        summary = rr.insert_annotations()
-        self.stdout.write('Inserted {annotations} annotations for {taxa} taxa'.format(**summary))
-        summary = rr.insert_tree()
-        self.stdout.write('Inserted tree with {leaves} leaves and {internal_nodes} internal nodes'.format(**summary))
+        self.stdout.write('Clearing tables...')
+        Annotation.objects.all().delete()
+        Protein.objects.all().delete()
+        Taxonomy.objects.all().delete()
+        NcbiTaxonomy.objects.all().delete()
+        self.stdout.write('Inserting annotations...')
+        self.stdout.write('Inserted {annotations} annotations for {taxa} taxa'.format(**rr.insert_annotations()))
+        self.stdout.write('Inserting taxonomic tree...')
+        self.stdout.write('Inserted tree with {leaves} leaves and {internal_nodes} internal nodes'.format(
+            **rr.insert_tree()))
 
 
 class RabminerReader(object):
@@ -47,7 +53,6 @@ class RabminerReader(object):
         counter_taxa = 0
         counter_annotations = 0
         for taxon in self.taxon2file:
-            #print '{},{}'.format(taxon, self.taxon2name[taxon])
             taxonomy_record = Taxonomy(taxon=taxon, name=self.taxon2name[taxon])
             taxonomy_record.save()
             counter_taxa += 1

@@ -27,8 +27,8 @@ DEBUG = True
 
 # Celery settings
 
-BROKER_URL = 'amqp://jsurkont:1234@172.22.50.130:5672/myvhost'
-CELERY_RESULT_BACKEND = 'amqp://jsurkont:1234@172.22.50.130:5672/myvhost'
+BROKER_URL = 'amqp://rabifier:12345@localhost:5672/rabdb-vhost'
+CELERY_RESULT_BACKEND = 'amqp://rabifier:12345@localhost:5672/rabdb-vhost'
 CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
 
 #: Only add pickle to this list if your broker is secured
@@ -110,8 +110,7 @@ USE_TZ = True
 
 # Email
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -120,6 +119,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'production/static')
 
 
 # Rabifier settings, used by rabifier_app
