@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found{% endblock %}
+
+{% load staticfiles %}
+
+{% block content %}
+<h1>Page not found</h1>
+
+<p> The page you requested could not be found!
+If you where expecting Rabifier results or RabDB search results,
+these may have expired</p>
+<p>If you think there is something wrong, please
+<a class='mailto' name="rabdb">contact us</a>.
+</p>
+{% endblock %}
