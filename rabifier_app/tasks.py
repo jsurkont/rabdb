@@ -28,7 +28,7 @@ def run_rabifier(sequences, **kwargs):
         send_mail('RabDB: your Rab predictions are ready',
                   'To check you Rab predictions follow this link http://rabdb.org/rabifier/{}'.format(
                       run_rabifier.request.id),
-                  'RabDB <{}@igc.gulbenkian.pt>'.format(settings.EMAIL_HOST_USER),
+                  settings.DEFAULT_FROM_EMAIL,
                   [kwargs['email']]
                   )
     return out
