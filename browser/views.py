@@ -6,15 +6,46 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 from networkx.readwrite import json_graph
 
 from .models import Annotation, NcbiTaxonomy, Taxonomy
 from .forms import RabBrowserForm, RabProfileForm, TaxonomyTreeForm
 
 
+def natural_sort(l):
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    return sorted(l, key=alphanum_key)
+
+
+def get_rab_sf():
+    return [(x, x[0].upper() + x[1:]) for x in natural_sort(
+        [ann['rab_subfamily'] for ann in Annotation.objects.values('rab_subfamily').distinct()])]
+
+
+def filter_taxa():
+    try:
+        graph = json_graph.tree_graph(NcbiTaxonomy.dump_bulk(NcbiTaxonomy.objects.get(taxon_id=1))[0])
+    except ObjectDoesNotExist:
+        return []
+    nodes = [graph.node[x]['data'] for x, d in graph.out_degree().items() if d > 0]
+    pattern = re.compile('^[A-Z][a-z]+$')
+    ranks = {'no rank', 'kingdom', 'phylum', 'order', 'subkingdom'}
+    id_name = []
+    for x in nodes:
+        if x['node_rank'] in ranks and pattern.findall(x['taxon_name']):
+            id_name.append((x['taxon_id'], x['taxon_name']))
+    return sorted(id_name, key=lambda x: x[1])
+
+
 def index(request):
     if request.method == 'POST':
-        form = RabBrowserForm(request.POST)
+        form = RabBrowserForm(data=request.POST,
+                              rab_subfamily_choices=[('all', 'All')] + get_rab_sf(),
+                              species_choices=[('all', 'All')] +
+                                              [(x.taxon, x.name) for x in Taxonomy.objects.all().order_by('name')],
+                              taxon_choices=[('all', 'All')] + filter_taxa())
         if form.is_valid():
             sp = form.cleaned_data['species']
             tx = form.cleaned_data['taxon']
@@ -26,7 +57,10 @@ def index(request):
             return HttpResponseRedirect(reverse('browser:browse', kwargs={'tax': taxon, 'sf': sf}))
 
     else:
-        form = RabBrowserForm()
+        form = RabBrowserForm(rab_subfamily_choices=[('all', 'All')] + get_rab_sf(),
+                              species_choices=[('all', 'All')] +
+                                              [(x.taxon, x.name) for x in Taxonomy.objects.all().order_by('name')],
+                              taxon_choices=[('all', 'All')] + filter_taxa())
 
     return render(request, 'browser/index.html', {'form': form})
 
@@ -123,9 +157,16 @@ def browse(request, **kwargs):
 
 
 def profile(request):
+    taxon_choices = [('', '---')] + filter_taxa()
+    rab_subfamily_choices = [('', '---')] + get_rab_sf()
     if request.method == 'POST':
-        form_profile = RabProfileForm(request.POST, prefix='profile')
-        form_tree = TaxonomyTreeForm(request.POST, prefix='tree')
+        form_profile = RabProfileForm(data=request.POST,
+                                      prefix='profile',
+                                      rab_subfamily_choices=rab_subfamily_choices,
+                                      taxon_choices=taxon_choices)
+        form_tree = TaxonomyTreeForm(data=request.POST,
+                                     prefix='tree',
+                                     taxon_choices=taxon_choices)
         if 'show_profile' in request.POST and form_profile.is_valid():
             tx = form_profile.cleaned_data['taxon']
             sf = form_profile.cleaned_data['rab_subfamily']
@@ -134,8 +175,11 @@ def profile(request):
             tx = form_tree.cleaned_data['taxon']
             return HttpResponseRedirect(reverse('browser:taxonomy', kwargs={'tax': tx}))
     else:
-        form_profile = RabProfileForm(prefix='profile')
-        form_tree = TaxonomyTreeForm(prefix='tree')
+        form_profile = RabProfileForm(rab_subfamily_choices=rab_subfamily_choices,
+                                      taxon_choices=taxon_choices,
+                                      prefix='profile')
+        form_tree = TaxonomyTreeForm(taxon_choices=taxon_choices,
+                                     prefix='tree')
     return render(request, 'browser/profile_index.html', {'form': form_profile, 'form_tree': form_tree})
 
 
