@@ -24,7 +24,7 @@ In this manual we create two virtual machines using KVM that run Ubuntu Server 1
 rabdb
 ^^^^^
 
-#. Create a virtual machine with the ``rabdb`` user (default password: 12345)
+#. Create a virtual machine with the ``rab`` user (default password: 12345)
 #. Setup a database server e.g. PostgreSQL. ::
 
     apt-get install libpq-dev postgresql postgresql-contrib
@@ -45,7 +45,7 @@ rabdb
 #. Install ``rabbitmq-server`` and set it up ::
 
     apt-get install rabbitmq-server
-    rabbitmqctl add_user myuser mypassword
+    rabbitmqctl add_user rabifier mypassword
     rabbitmqctl add_vhost rabdb-vhost
     rabbitmqctl set_permissions -p rabdb-vhost rabifier ".*" ".*" ".*"
 
@@ -87,7 +87,10 @@ rabdb
 
     pip install rabifier
 
-#. Change permissions to allow Apache to read the files in ``/home/rabdb/venv/lib/python2.7/site-packages``
+#. Change permissions to allow Apache to read the files in ``/home/rab/venv/lib/python2.7/site-packages`` ::
+
+    chgrp -R www-data venv/lib/python2.7/site-packages/
+
 #. Clone the ``rabdb`` repository to ``$HOME``, install its dependencies. Modify ``manage.py``: change
    ``rabdb.settings`` to ``rabdb.settings_production``
 #. Update ``rabdb/rabdb/settings_production.py`` with the correct PostgreSQL and  RabbitMQ information.
@@ -114,9 +117,10 @@ rabdb
 
 #. Configure Apache to work with RabDB ::
 
-    cp rabdb/rabdb/production/config/rabdb.config /etc/apache2/sites-available/rabdb.conf
+    cp rabdb/production/config/rabdb.conf /etc/apache2/sites-available/rabdb.conf
     chmod 644 /etc/apache2/sites-available/rabdb.conf
     a2ensite rabdb
+    a2dissite 000-default
     service apache2 restart
 
 rabdb-worker
@@ -136,13 +140,14 @@ rabdb-worker
    all users e.g. add ``/home/rabdbworker/system/bin`` to ``/etc/environment``.
 #. Clone the ``rabdb`` repository to ``$HOME``, install its dependencies. 
 #. Configure rabdb.
-    #. Select the appropriate settings file in ``rabdb/celery.py``
+    #. Select the appropriate settings file in ``rabdb/celery.py``, e.g. the rabdb settings file.
     #. Point RabbitMQ to the correct server.
     #. Update the email settings.
+    #. Make sure that the connection to the database can be established or a local dummy sqlite is set (otherwise celeryd fails to load).
 #. Add daemon scripts to the system ::
 
-    cp scripts/celeryd.conf  /etc/default/celeryd
-    cp scripts/celeryd.init  /etc/init.d/celeryd
+    cp production/config/celeryd.conf  /etc/default/celeryd
+    cp production/config/celeryd.init  /etc/init.d/celeryd
     chmod 644 /etc/default/celeryd
     chmod 755 /etc/init.d/celeryd
     service celeryd start
