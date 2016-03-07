@@ -4,7 +4,7 @@ celery
 django
 django-celery
 django-treebeard
-ete2
+ete3
 networkx
 psycopg2
 rabifier
