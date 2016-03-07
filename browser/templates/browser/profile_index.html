@@ -10,7 +10,7 @@
     <a href="http://www.ensembl.org">Ensembl</a> and <a href="http://ensemblgenomes.org">Ensembl Genomes</a>
     databases.</p>
 
-<p>Select a Rab subfamily, and taxon of interest, and hit 'generate profile' to see a profile of presence and absence
+<p>Select a Rab subfamily and taxon of interest, hit 'generate profile' to see the profile of presence and absence
     of selected Rab in the taxonomic context.</p>
 
 <form action="{% url 'browser:profile' %}" method="post">
@@ -19,8 +19,7 @@
     <p><input type="submit" value="Generate profile" name="show_profile" /></p>
 </form>
 
-<p style="margin-top:30px;">You can also display a taxonomic tree for a given taxon to browse all Rabs present that
-    tree.</p>
+<p style="margin-top:30px;">You can also display a species tree, for a given taxon, to browse all Rabs in the taxonomic context.</p>
 
 <form action="{% url 'browser:profile' %}" method="post">
     {% csrf_token %}

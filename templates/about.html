@@ -8,13 +8,15 @@
 
 <h1>About RabDB &amp; Rabfier</h1>
 
-<p><strong>RabDB2</strong> is a database containing information on Rab protein families found in over 244 fully
+<p><strong>RabDB2</strong> is a database containing information on the Rab family of small GTPases in 244 fully
     sequenced Eukaryotic genomes. The content has been generated using the
     <a href="{% url 'rabifier:search' %}">Rabifier2 classification pipeline</a>. If you have any questions, comments or
-    suggestions about RabDB or the Rabifier don't hesitate to <a class='mailto' name="rabdb">contact us</a>.
+    suggestions about RabDB or the Rabifier don't hesitate to contact us at
+    <strong>jsurkont (at) igc.gulbenkian.pt</strong> or
+    <strong>jleal (at) igc.gulbenkian.pt</strong>.
 </p>
-<p><strong>Rabifier2</strong> is a Rab classification pipeline originally developed by Yoan Diekmann to identify
-    Rab proteins and classify them into subfamilies based on sequence.
+<p><strong>Rabifier2</strong> is an major update over the pipeline originally developed by Yoan Diekmann to identify
+    Rab GTPases and classify them into subfamilies based on the protein sequence.
 </p>
 <p><strong>Reference:</strong> If Rabifier is useful in your research, please cite:</p>
 <ul>
@@ -22,18 +24,25 @@
     Diekmann Y, <em> et al.</em>
     PLoS Comput Biol 7(10): e1002217.
     <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a></li>
-    <li>Rabifier2</li>
+    <li>Rabifier2: an improved bioinformatic classifier of Rab GTPases.
+    Surkont J, <em> et al.</em>
+    (submitted)
+    </li>
 </ul>
 
 <h2>Availability</h2>
 
 <p>The source code of the Rabifier classification pipeline is publicly available at
-    <a href="http://github.com/evocell/rabifier">GitHub</a>.</p>
-
-<p>The Rabifier uses a manually curated set of Rab and non-Rab sequences to identify Rabs and classify them
-    into subfamilies. These files can also be downloaded from
-    <a href="http://github.com/evocell/rabifier-data">GitHub</a>.
+    <a href="http://github.com/evocell/rabifier">GitHub</a>. Rabifier is also distributed as a Python package at
+    <a href="https://pypi.python.org/pypi/rabifier">PyPI</a>.
 </p>
+
+<p>The Rabifier pipeline uses a manually curated set of Rab and non-Rab sequences to identify Rabs and classify them
+    into subfamilies. These data can be downloaded from <a href="http://github.com/evocell/rabifier-data">GitHub</a>.
+</p>
+
+<p>Rabifier is an ongoing project. If you wish to contribute visit the project's
+    <a href="http://github.com/evocell/rabifier">website</a> or send us feedback or comments.</p>
 
 <h2>Creators</h2>
 

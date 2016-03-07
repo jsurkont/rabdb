@@ -8,15 +8,16 @@
 
 <h1>Welcome to RabDB2</h1>
 
-<p>RabDB is a database created to explore the universe of Rabs and Rab subfamilies predicted by the Rabifier
-    classification pipleline. The Rabifier has predicted thousands of novel Rabs, and assigned putative subfamiiles
-    to each of them. Here you can browse this universe, view evolutionary profiles, and
-    <a href="{% url 'rabifier:search' %}">submit your own sequences</a> to the Rabfifier to be classified to a subfamily.
+<p>RabDB is a database created to explore the universe of the Rab family of small GTPases, key regulators of the
+    Eukaryotic endomembrane system, predicted by the Rabifier classification pipleline in the sequenced eukaryotic
+    genomes.
+    The Rabifier has predicted thousands of Rabs, and assigned putative subfamilies to each of them.
+    Here you can browse this universe, view evolutionary profiles, and submit your own sequences to the Rabifier.
 </p>
 
 <h2>Rabify</h2>
 
-<p><a href="{% url 'rabifier:search' %}">Submit a protein sequence</a> to find out if it is a Rab, and if so,
+<p><a href="{% url 'rabifier:search' %}">Submit a protein sequence</a> to find out if it is a Rab GTPase, and if so,
     to what subfamily it belongs.
 </p>
 
@@ -40,7 +41,10 @@
         Diekmann Y, <em> et al.</em>
         PLoS Comput Biol 7(10): e1002217.
         <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a></li>
-    <li>Rabifier2</li>
+    <li>Rabifier2: an improved bioinformatic classifier of Rab GTPases.
+        Surkont J, <em> et al.</em>
+        (submitted)
+    </li>
 </ul>
 
 {% endblock %}
