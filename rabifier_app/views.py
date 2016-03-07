@@ -62,12 +62,6 @@ def search(request):
         form = RabifyForm(request.POST, request.FILES)
         if form.is_valid():
             sequences = form.cleaned_data['sequence']
-            #if form.cleaned_data['sequence']:
-            #    sequences = form.cleaned_data['sequence']
-            #elif form.cleaned_data['fastafile']:
-            #    sequences = form.cleaned_data['fastafile'].read()
-            #else:
-            #    sequences = ''
             job = run_rabifier.delay(
                 sequences,
                 email=form.cleaned_data['email'],
