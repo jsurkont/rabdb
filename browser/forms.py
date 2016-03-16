@@ -4,20 +4,20 @@ from django import forms
 class RabBrowserForm(forms.Form):
 
     rab_subfamily = forms.ChoiceField(choices=(), label='Rab subfamily', required=False)
-    species = forms.ChoiceField(choices=(), label='Species', required=False)
     taxon = forms.ChoiceField(choices=(), label='Taxon', required=False)
+    species = forms.ChoiceField(choices=(), label='Species', required=False)
 
     def __init__(self, rab_subfamily_choices, species_choices, taxon_choices, *args, **kwargs):
         super(RabBrowserForm, self).__init__(*args, **kwargs)
         self.fields['rab_subfamily'].choices = rab_subfamily_choices
-        self.fields['species'].choices = species_choices
         self.fields['taxon'].choices = taxon_choices
+        self.fields['species'].choices = species_choices
 
     def clean(self):
         cleaned_data = super(RabBrowserForm, self).clean()
         sf = cleaned_data.get('rab_subfamily')
-        sp = cleaned_data.get('species')
         tx = cleaned_data.get('taxon')
+        sp = cleaned_data.get('species')
 
         if sp != 'all' and tx != 'all':
             raise forms.ValidationError('Select either species OR taxon')
