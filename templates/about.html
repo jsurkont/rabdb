@@ -15,18 +15,66 @@
     <strong>jsurkont (at) igc.gulbenkian.pt</strong> or
     <strong>jleal (at) igc.gulbenkian.pt</strong>.
 </p>
+
 <p><strong>Rabifier2</strong> is an major update over the pipeline originally developed by Yoan Diekmann to identify
     Rab GTPases and classify them into subfamilies based on the protein sequence.
 </p>
+
+<ul>
+    <li>Improvements to the Rabifier pipeline.</li>
+    <ul>
+        <li> Redesigned and rewritten the Rabifier codebase:</li>
+        <ul>
+            <li>The pipeline is now written purely in Python, where Rabifier1 depends also on R.</li>
+            <li>Both Python2 and Python3 are supported.</li>
+            <li>The source code is freely available, allowing for local installation. The package can be easily installed from the source or from  PyPI.</li>
+            <li>HMMER3 is used for similarity search instead of BLAST.</li>
+            <li>Sequences are now classified into subfamilies based on sequence score comparison against a model of each subfamily (instead of empirical distributions), which is subsequently used as input for the naive Bayes classifier.</li>
+        </ul>
+        <li>Updated the third-party software:</li>
+        <ul>
+            <li>HMMER 3.1b1</li>
+            <li>BLAST 2.2.30</li>
+            <li>MEME 4.10.2</li>
+            <li>CD-HIT 4.6.4</li>
+            <li>PRANK v.150803</li>
+            <li>MAFFT 7.221</li>
+        </ul>
+        <li>Reference datasets have been updated. The changes include updates to some of the underpopulated subfamilies (AtRabA3, AtRabA6, AtRabD1, AtRabF1, CeRabY6, DmRab9F, DmRabX4, DmRabX5, DmRabX6, EhRabA, Rab17, Rab31, Rab41, Rab42), based on genomes from the Ensembl database.</li>
+        <li>Sequence data from the Ensembl database:</li>
+        <ul>
+            <li>RabDB is now based on the sequence data from Ensembl, which allows regular updates with the growing list of sequenced genomes.</li>
+            <li>RabDB predictions are cross-linked to Ensembl enabling easy browsing of protein and evolutionary information.</li>
+        </ul>
+    </ul>
+    <li>Improvements to RabDB.</li>
+    <ul>
+        <li>Improvements to the sequence data:</li>
+        <ul>
+            <li>RabDB is now based on the sequence data from Ensembl, which allows regular updates with the growing list of sequenced genomes.</li>
+            <li>RabDB predictions are cross-linked to Ensembl enabling easy browsing of protein and evolutionary information.</li>
+        </ul>
+        <li>Improvements to the web tool interface:</li>
+        <ul>
+            <li>RabDB now allows browsing Rabs using different levels of the taxonomic organization.</li>
+            <li>Given the major speed improvement of the Rabifier, RabDB now allows for annotation of up to 500 user submitted sequences.</li>
+            <li>RabDB-Rabifier user interface now allows modifying classification parameters.</li>
+            <li>A detailed classification summary for each sequence is now available.</li>
+        </ul>
+    </ul>
+</ul>
+
 <p><strong>Reference:</strong> If Rabifier is useful in your research, please cite:</p>
 <ul>
-    <li>Thousands of Rab GTPases for the Cell Biologist.
-    Diekmann Y, <em> et al.</em>
-    PLoS Comput Biol 7(10): e1002217.
-    <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a></li>
     <li>Rabifier2: an improved bioinformatic classifier of Rab GTPases.
-    Surkont J, <em> et al.</em>
-    (submitted)
+        Surkont J, <em> et al.</em> (2016)
+        Bioinformatics
+        <a href="http://bioinformatics.oxfordjournals.org/content/early/2016/11/18/bioinformatics.btw654.abstract">doi:10.1093/bioinformatics/btw654</a>
+    </li>
+    <li>Thousands of Rab GTPases for the Cell Biologist.
+        Diekmann Y, <em> et al.</em> (2011)
+        PLoS Comput Biol 7(10): e1002217
+        <a href="http://dx.plos.org/10.1371/journal.pcbi.1002217">doi:10.1371/journal.pcbi.1002217</a>
     </li>
 </ul>
 
@@ -50,13 +98,13 @@
 
 <table class="creators">
     <tr>
-        <td><img src="{% static 'images/pictures/ydiekmann.jpg' %}" alt="Yoan Diekmann"></td>
         <td><img src="{% static 'images/pictures/jsurkont.jpg' %}" alt="Jaroslaw Surkont"></td>
+        <td><img src="{% static 'images/pictures/ydiekmann.jpg' %}" alt="Yoan Diekmann"></td>
         <td><img src="{% static 'images/pictures/jleal.jpg' %}" alt="Jose Pereira Leal"></td>
     </tr>
     <tr>
-        <td>Yoan Diekmann</td>
         <td>Jaroslaw Surkont</td>
+        <td>Yoan Diekmann</td>
         <td>Jose Pereira Leal</td>
     </tr>
 </table>
