@@ -3,7 +3,7 @@ import re
 import math
 import json
 
-import ete2
+import ete3
 import networkx
 from networkx.readwrite import json_graph
 from django.core.management.base import BaseCommand
@@ -18,8 +18,8 @@ class Command(BaseCommand):
            "Each file contains Rab predictions for a single species, file name should correspond to the species' " \
            "taxon id e.g. for human '9606.json'. Only positive predictions (i.e. putative Rabs) are included in " \
            "the database). " \
-           "Taxonomy is build based on the NCBI taxonomy using ete2 module, some files are downloaded to $HOME, " \
-           "check http://pythonhosted.org/ete2/tutorial/tutorial_ncbitaxonomy.html for more details."
+           "Taxonomy is build based on the NCBI taxonomy using ete3 module, some files are downloaded to $HOME, " \
+           "check http://etetoolkit.org/docs/latest/tutorial/tutorial_ncbitaxonomy.html for more details."
 
     def add_arguments(self, parser):
         parser.add_argument('path', help='path to a directory with Rab predictions')
@@ -44,7 +44,7 @@ class RabminerReader(object):
         self.path = path
         self.taxon2file = {int(os.path.splitext(f)[0]): f for f in os.listdir(path)}  # all taxa names must be integers
         assert self.taxon2file.keys()
-        self.ncbi = ete2.NCBITaxa()
+        self.ncbi = ete3.NCBITaxa()
         self.taxon2name = self.ncbi.get_taxid_translator(self.taxon2file.keys())
 
     @atomic

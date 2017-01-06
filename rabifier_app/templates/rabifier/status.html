@@ -5,9 +5,19 @@
 <meta http-equiv="refresh" content="10"/>
 {% endblock %}
 
+{% load staticfiles %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+{% endblock %}
+
 {% block content %}
 
 <h1>Rabify!</h1>
+
+<div style="margin:30px;text-align:center;">
+    <i class="fa fa-spinner fa-pulse" style="font-size:100px;color:#6d6e70;"></i>
+</div>
 
 <p>Please be patient, as this may take a few minutes.</p>
 <p>This page will refresh automatically until results are ready.</p>

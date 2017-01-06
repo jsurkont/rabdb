@@ -201,7 +201,8 @@ def profile_result(request, **kwargs):
                      Annotation.objects.filter(taxonomy__taxon__in=leaves).filter(rab_subfamily=kwargs['sf'])}
     for node in graph.nodes_iter():
         graph.node[node]['has_rab'] = True if graph.node[node]['data']['taxon_id'] in taxa_with_rab else False
-        graph.node[node]['browse_rabs_url'] = '/browser/tax/{}/sf/{}'.format(graph.node[node]['data']['taxon_id'],
+        graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/{}'.format('/'.join(request.path.split('/')[:-6]),
+                                                                             graph.node[node]['data']['taxon_id'],
                                                                              kwargs['sf'])
         graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
         del(graph.node[node]['data'])
@@ -221,7 +222,8 @@ def taxonomy(request, **kwargs):
         raise Http404('Tree root not found')
 
     for node in graph.nodes_iter():
-        graph.node[node]['browse_rabs_url'] = '/browser/tax/{}/sf/all'.format(graph.node[node]['data']['taxon_id'])
+        graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/all'.format('/'.join(request.path.split('/')[:-3]),
+                                                                        graph.node[node]['data']['taxon_id'])
         graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
         del(graph.node[node]['data'])
 

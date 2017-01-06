@@ -2,13 +2,9 @@ RabDB
 =====
 
 RabDB setup
-------------
+-----------
 
 RabDB setup is based on a web server, that hosts the RabDB website and the RabbitMQ message broker, and one or more rabifier workers that run the Rab predictions requested by the website.
-
-.. note:: Although both rabifier and rabdb support both Python2.7+ and Python3.4+, one of the dependencies 
-          `ete2 <http://etetoolkit.org/>`_ is not yet stable in Python3.4+, you can install it using
-          ``pip install --upgrade  https://github.com/jhcepas/ete/archive/3.0.zip``
 
 Prepare host
 ^^^^^^^^^^^^
