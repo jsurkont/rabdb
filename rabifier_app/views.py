@@ -4,7 +4,7 @@ import math
 
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from .forms import RabifyForm
 from .tasks import run_rabifier
@@ -12,6 +12,7 @@ from .tasks import run_rabifier
 
 def result(request, ticket):
     task = run_rabifier.AsyncResult(ticket)
+    print(task.state)
     if task.ready():
         value = json.loads(task.get())
         if 'download' in request.GET:
@@ -53,8 +54,10 @@ def result(request, ticket):
                 }
             result[v['id']] = l
         return render(request, 'rabifier/result.html', {'result': result})
-    else:
+    elif task.status == 'PENDING':
         return render(request, 'rabifier/status.html')
+    else:
+        return Http404
 
 
 def search(request):

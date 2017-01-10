@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -12,7 +12,7 @@ from rabifier.rabmyfire import Rabmyfire
 
 @shared_task
 def run_rabifier(sequences, **kwargs):
-    seq_file = tempfile.NamedTemporaryFile()
+    seq_file = tempfile.NamedTemporaryFile(mode='w+t')
     seq_file.write(sequences)
     seq_file.seek(0)
     classifier = Rabmyfire(

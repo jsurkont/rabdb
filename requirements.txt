@@ -2,9 +2,9 @@ amqp
 biopython
 celery
 django
-django-celery
 django-treebeard
 ete3
 networkx
 psycopg2
 rabifier
+redis

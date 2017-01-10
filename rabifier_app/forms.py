@@ -68,5 +68,5 @@ class RabifyForm(forms.Form):
             if fastafile._size > settings.MAX_UPLOAD_SIZE:
                 raise forms.ValidationError('File size error: file too big, maximum file size %(filesize)s MB',
                                             params={'filesize': settings.MAX_UPLOAD_SIZE / 1024**2})
-            cleaned_data['sequence'] = fastafile.read()
+            cleaned_data['sequence'] = fastafile.read().decode('utf-8')
             validate_fasta(cleaned_data.get('sequence'))
