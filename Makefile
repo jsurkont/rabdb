@@ -6,6 +6,7 @@ help:
 clean:
 	find . -name "*.pyc" -delete
 	find . -name "__pycache__" -exec rm -rf {} +
+	rm -rf production/static
 
 build-static:
 	./manage.py collectstatic

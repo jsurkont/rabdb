@@ -12,7 +12,6 @@ from .tasks import run_rabifier
 
 def result(request, ticket):
     task = run_rabifier.AsyncResult(ticket)
-    print(task.state)
     if task.ready():
         value = json.loads(task.get())
         if 'download' in request.GET:

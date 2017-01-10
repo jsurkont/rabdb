@@ -58,10 +58,11 @@ class RabminerReader(object):
             counter_taxa += 1
             with open(os.path.join(self.path, self.taxon2file[taxon])) as handle:
                 a = json.load(handle)
-                for b in a.itervalues():
+                for b in a.values():
                     if b['is_rab']:
-                        assert b['evalue_bh_rabs'] is not None and b['evalue_bh_rabs'] != 10
-                        assert b['evalue_bh_rabs'] < b['evalue_bh_non_rabs'] or (b['evalue_bh_rabs'] and b['evalue_bh_non_rabs'] is None)
+                        assert b['evalue_bh_rabs'] is not None
+                        assert b['evalue_bh_rabs'] != 10
+                        assert (b['evalue_bh_rabs'] and b['evalue_bh_non_rabs'] is None) or (b['evalue_bh_rabs'] < b['evalue_bh_non_rabs'])
                         gene, transcript = pattern.findall(b['sequence']['header'])[0]
                         protein_record = Protein(protein=b['id'], transcript=transcript, gene=gene,
                                                  description=b['sequence']['header'], seq=b['sequence']['seq'])

@@ -8,7 +8,6 @@ from .settings import *
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -24,14 +23,9 @@ ADMINS = (
     ('Jaroslaw Surkont', 'jsurkont@igc.gulbenkian.pt'),
 )
 
-# Celery settings
-
 BROKER_URL = ''
 CELERY_RESULT_BACKEND = ''
 CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -39,12 +33,10 @@ DATABASES = {
         'NAME': '',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'localhost',
+        'HOST': '',
         'PORT': '',
     }
 }
-
-# Email
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = ''
