@@ -24,7 +24,7 @@ DEBUG = True
 
 BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 CELERY_RESULT_BACKEND = 'redis://localhost/0'
-CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
+CELERY_TASK_RESULT_EXPIRES = 3600 * 24
 
 #: Only add pickle to this list if your broker is secured
 #: from unwanted access (see userguide/security.html)
@@ -35,8 +35,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -50,8 +48,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -73,7 +69,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
