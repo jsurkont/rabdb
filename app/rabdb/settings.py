@@ -21,9 +21,8 @@ SECRET_KEY = 'v)gz16nex_!1s$zsg&aiax=j4+6#op8v!+a^sd0m(g)#n5ps_r'
 DEBUG = True
 
 # Celery settings
-
-BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_RESULT_BACKEND = 'redis://localhost/0'
+CELERY_BROKER_URL = os.environ.get('RABDB_BROKER', 'amqp://guest:guest@localhost:5672//')
+CELERY_RESULT_BACKEND = os.environ.get('RABDB_RESULT_BACKEND', 'redis://localhost/0')
 CELERY_TASK_RESULT_EXPIRES = 3600 * 24
 
 #: Only add pickle to this list if your broker is secured
