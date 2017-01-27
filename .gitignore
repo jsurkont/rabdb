@@ -1,3 +1,4 @@
-db.sqlite3
-production/static
-rabdb/settings_production.py
+app/db.sqlite3
+app/production/static
+app/rabdb/settings_production.py
+lib

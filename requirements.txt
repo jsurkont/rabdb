@@ -1,4 +1,3 @@
-amqp
 biopython
 celery
 django

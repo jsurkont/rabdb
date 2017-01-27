@@ -1,6 +1,8 @@
 RabDB
 =====
 
+A web service for exploring the universe of Rab GTPases.
+
 RabDB setup
 -----------
 
@@ -14,7 +16,7 @@ In this manual we create two virtual machines using KVM that run Ubuntu Server 1
 #. Install KVM ::
 
     sudo apt-get install qemu-kvm libvirt-bin bridge-utils
-    
+
 #. To use GUI install also ``virt-manager`` and ``qemu-system``
 
 rabdb
@@ -51,12 +53,12 @@ rabdb
     a2enmod wsgi  # activate the module
 
     ### OPTIONAL ###
-    # Test wsgi by creating a file var/www/wsgi_app.py with the following contents: 
-    def application(environ, start_response): 
+    # Test wsgi by creating a file var/www/wsgi_app.py with the following contents:
+    def application(environ, start_response):
         status = '200 OK'
         output = b'Hello world, I am a wsgi app!'
-        response_headers = [('Content-Type', 'text/plain'), ('Content-Length', str(len(output)))] 
-        start_response(status, response_headers) 
+        response_headers = [('Content-Type', 'text/plain'), ('Content-Length', str(len(output)))]
+        start_response(status, response_headers)
         return [output]
 
     # Make a temporary entry in the apache configuration file for testing wsgi somewhere at the end of /etc/apache2/apache2.conf:
@@ -76,9 +78,9 @@ rabdb
     cd $HOME
     virtualenv venv
 
-#. Install ``rabifier``, note that you don't need to install any third-party software required by ``rabifier``, 
-   except for the Python modules, unless you want to run ``rabifier`` from the same machine as the web server 
-   (``scipy``, a rabifier's dependency, requires some system libraries to compile, install: gfortran, 
+#. Install ``rabifier``, note that you don't need to install any third-party software required by ``rabifier``,
+   except for the Python modules, unless you want to run ``rabifier`` from the same machine as the web server
+   (``scipy``, a rabifier's dependency, requires some system libraries to compile, install: gfortran,
    libblas-dev, liblapack-dev) ::
 
     pip install rabifier
@@ -97,8 +99,8 @@ rabdb
 #. Populate the database using ``./manage.py populatedb`` and precomputed predictions, check ``./manage.py help populatedb``
    for more information. This command uses NCBI Taxonomy that needs to be downloaded and preprocessed at the first usage.
    This process requires ~3GB of memory, you can either temporally expand the VM's memory or pre-compute the Taxonomy DB
-   on a different machine and copy it to ``~/.etetoolkit``, check ``ete2`` documentation for more information. Note, 
-   ``populatedb`` only uses positive Rab predictions, so it's better to run ``rabifier`` with the ``--show_positive`` option. 
+   on a different machine and copy it to ``~/.etetoolkit``, check ``ete2`` documentation for more information. Note,
+   ``populatedb`` only uses positive Rab predictions, so it's better to run ``rabifier`` with the ``--show_positive`` option.
    Apache restart may be required for changes to appear on the website.
 
 #. Collect static files ::
@@ -127,14 +129,14 @@ rabdb-worker
 
     cd $HOME
     virtualenv virtualenv
-     
+
 #. Install ``rabifier`` (``scipy``, a rabifier's dependency, requires some system libraries to compile, install them) ::
 
     pip install rabifier
-    
+
 #. Ensure that rabifier dependencies are present (check rabifier's docs) and available in the system path for
    all users e.g. add ``/home/rabdbworker/system/bin`` to ``/etc/environment``.
-#. Clone the ``rabdb`` repository to ``$HOME``, install its dependencies. 
+#. Clone the ``rabdb`` repository to ``$HOME``, install its dependencies.
 #. Configure rabdb.
     #. Select the appropriate settings file in ``rabdb/celery.py``, e.g. the rabdb settings file.
     #. Point RabbitMQ to the correct server.
@@ -149,5 +151,3 @@ rabdb-worker
     service celeryd start
 
 #. Run celery daemon at the boot time. Use e.g. ``rcconf`` to configure it (may require a reboot if ``celeryd`` doesn't show up in the list).
-
-
