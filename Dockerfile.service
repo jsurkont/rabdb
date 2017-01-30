@@ -1,0 +1,25 @@
+FROM python:3.6.0
+
+MAINTAINER Jaroslaw Surkont <jarek.surkont@gmail.com>
+
+ENV BASE=/rabdb \
+  RABDB_ENV=production
+
+COPY app requirements.txt ${BASE}/
+
+WORKDIR ${BASE}
+
+RUN pip install uwsgi && pip install -r requirements.txt && rm -r /root/.cache
+
+EXPOSE 3031
+
+# ENTRYPOINT ["uwsgi", "--http", ":3031", "--wsgi-file", "rabdb/wsgi.py", \
+#   "--master", "--check-static", "production"]
+# ENTRYPOINT ["uwsgi", "--socket", ":3031", "--wsgi-file", "rabdb/wsgi.py", \
+#   "--master", "--check-static", "production"]
+# ENTRYPOINT ["uwsgi", "--socket", ":3031", "--manage-script-name", "--mount", \
+#   "/rabdb=rabdb.wsgi:application", "--master", "--check-static", "production"]
+# CMD ["--processes", "4", "--threads", "2"]
+
+CMD ["uwsgi", "--http", ":3031", "--wsgi-file", "rabdb/wsgi.py", \
+  "--master", "--check-static", "production"]

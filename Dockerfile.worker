@@ -1,0 +1,35 @@
+FROM python:3.6.0
+
+MAINTAINER Jaroslaw Surkont <jarek.surkont@gmail.com>
+
+ENV BASE=/rabdb \
+  RABDB_ENV=production
+
+COPY app requirements.txt ${BASE}/
+COPY lib/blastp lib/phmmer lib/hmm* /usr/local/bin/
+COPY lib/meme_4* ${BASE}/lib/
+COPY lib/superfamily ${BASE}/lib/superfamily/
+WORKDIR ${BASE}
+
+RUN pip install -r requirements.txt && rm -r /root/.cache
+
+RUN tar -xzf lib/meme_4* -C lib && \
+  rm lib/meme_4*.tar.gz && \
+  cd lib/meme_4* && \
+  ./configure --prefix=${BASE}/lib/meme --bindir /usr/local/bin \
+    --with-url=http://meme-suite.org --enable-build-libxml2 \
+    --enable-build-libxslt && \
+  make && \
+  make install && \
+  cd ${BASE} && \
+  rm -r lib/meme_4*
+
+RUN cd lib/superfamily && \
+  gzip -d *.gz && \
+  mv hmmlib_1.75 hmmlib && \
+  chmod u+x *.pl && \
+  hmmpress hmmlib && \
+  cd ${BASE} && \
+  ln -s ${BASE}/lib/superfamily /usr/local/bin
+
+ENTRYPOINT ["celery", "-A", "rabdb", "worker"]
