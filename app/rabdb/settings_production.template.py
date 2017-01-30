@@ -28,7 +28,7 @@ ADMINS = (
 # CELERY_RESULT_BACKEND = ''
 # CELERY_TASK_RESULT_EXPIRES = 3600 * 24 * 7
 
-db_url = urlparse(os.environ.get('RABDB_DATABASE'))
+db_url = urlparse(os.environ.get('RABDB_DATABASE', 'postgresql://localhost:5432/rabdb'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.{:s}'.format(db_url.scheme),
