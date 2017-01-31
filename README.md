@@ -21,11 +21,14 @@ broker and Redis a result backend).
 Probably the easiest method to deploy RabDB into production uses docker images.
 
 1. Create images
-  ```
+
+  ```bash
   make build-docker-service
   make build-docker-worker
   ```
+
 2. Run images
+
   ```bash
   # Run the service
   docker run -d --name rabdb-service \
