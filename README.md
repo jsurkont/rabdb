@@ -1,6 +1,13 @@
 # RabDB
 
-A web service for exploring the universe of Rab GTPases.
+A web service for exploring the universe of Rab GTPases. For more information
+see:
+
+* Rabifier2: an improved bioinformatic classifier of Rab GTPases.
+  Surkont J, *et al.* (2016) Bioinformatics [doi:10.1093/bioinformatics/btw654](http://bioinformatics.oxfordjournals.org/content/early/2016/10/20/bioinformatics.btw654.abstract)
+* Thousands of Rab GTPases for the Cell Biologist.
+  Diekmann Y, *et al.* (2011) PLoS Comput Biol 7(10): e1002217
+  [doi:10.1371/journal.pcbi.1002217](http://dx.plos.org/10.1371/journal.pcbi.1002217)
 
 ## Usage
 
@@ -24,6 +31,7 @@ Probably the easiest method to deploy RabDB into production uses docker images.
 
   ```bash
   make build-docker-service
+  make pull-lib
   make build-docker-worker
   ```
 
