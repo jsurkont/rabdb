@@ -5,7 +5,7 @@ import re
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponseRedirect, Http404, HttpResponse, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from networkx.readwrite import json_graph
 
@@ -196,18 +196,20 @@ def profile_result(request, **kwargs):
     if not root_node:
         raise Http404('Tree root not found')
 
-    leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
-    taxa_with_rab = {x.taxonomy.taxon for x in
-                     Annotation.objects.filter(taxonomy__taxon__in=leaves).filter(rab_subfamily=kwargs['sf'])}
-    for node in graph.nodes_iter():
-        graph.node[node]['has_rab'] = True if graph.node[node]['data']['taxon_id'] in taxa_with_rab else False
-        graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/{}'.format('/'.join(request.path.split('/')[:-6]),
-                                                                             graph.node[node]['data']['taxon_id'],
-                                                                             kwargs['sf'])
-        graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
-        del(graph.node[node]['data'])
-    return render(request, 'browser/profile_result.html',
-                  {'info': info, 'data': json.dumps(json_graph.tree_data(graph, root_node))})
+    if 'json' in request.GET:
+        leaves = [graph.node[x]['data']['taxon_id'] for x, d in graph.out_degree().items() if d == 0]
+        taxa_with_rab = {x.taxonomy.taxon for x in
+                         Annotation.objects.filter(taxonomy__taxon__in=leaves).filter(rab_subfamily=kwargs['sf'])}
+        for node in graph.nodes_iter():
+            graph.node[node]['has_rab'] = True if graph.node[node]['data']['taxon_id'] in taxa_with_rab else False
+            graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/{}'.format('/'.join(request.path.split('/')[:-6]),
+                                                                                 graph.node[node]['data']['taxon_id'],
+                                                                                 kwargs['sf'])
+            graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
+            del(graph.node[node]['data'])
+        return JsonResponse(json_graph.tree_data(graph, root_node))
+
+    return render(request, 'browser/profile_result.html', {'info': info})
 
 
 def taxonomy(request, **kwargs):
@@ -221,11 +223,13 @@ def taxonomy(request, **kwargs):
     if not root_node:
         raise Http404('Tree root not found')
 
-    for node in graph.nodes_iter():
-        graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/all'.format('/'.join(request.path.split('/')[:-3]),
-                                                                        graph.node[node]['data']['taxon_id'])
-        graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
-        del(graph.node[node]['data'])
+    if 'json' in request.GET:
+        for node in graph.nodes_iter():
+            graph.node[node]['browse_rabs_url'] = '{}/tax/{}/sf/all'.format('/'.join(request.path.split('/')[:-3]),
+                                                                            graph.node[node]['data']['taxon_id'])
+            graph.node[node]['name'] = graph.node[node]['data']['taxon_name']
+            del(graph.node[node]['data'])
 
-    return render(request, 'browser/taxonomy.html',
-                  {'info': info, 'data': json.dumps(json_graph.tree_data(graph, root_node))})
+        return JsonResponse(json_graph.tree_data(graph, root_node))
+
+    return render(request, 'browser/taxonomy.html', {'info': info})
