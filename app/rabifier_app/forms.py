@@ -13,18 +13,20 @@ from django.conf import settings
 def validate_fasta(text):
     ids = set()
     non_alphabet_pattern = re.compile('[^a-zA-Z]')
-    for seq in SeqIO.parse(StringIO(text), 'fasta'):
-        if seq.id in ids:
+    for i, seq in enumerate(SeqIO.parse(StringIO(text), 'fasta'), start=1):
+        if not seq.id.strip():
+            raise forms.ValidationError('FASTA format error: Empty header for sequence #%(i)d', params={'i': i})
+        elif seq.id in ids:
             raise forms.ValidationError('FASTA format error: Repeated sequence ID %(seqid)s', params={'seqid': seq.id})
         else:
             ids.add(seq.id)
         if non_alphabet_pattern.findall(str(seq.seq)):
             raise forms.ValidationError('FASTA format error: Wrong characters in %(seqid)s', params={'seqid': seq.id})
         if len(seq) < 20:
-            raise forms.ValidationError('FASTA format error: Sequence %(seqid)s too short, sequences must have at least'
+            raise forms.ValidationError('Sequence error: Sequence %(seqid)s too short, sequences must have at least'
                                         ' 20 amino acids ', params={'seqid': seq.id})
         if len(seq) > 5000:
-            raise forms.ValidationError('FASTA format error: Sequence %(seqid)s too long, sequences must have at most'
+            raise forms.ValidationError('Sequence error: Sequence %(seqid)s too long, sequences must have at most'
                                         ' 5000 amino acids ', params={'seqid': seq.id})
     if len(ids) < 1:
         raise forms.ValidationError('Please input at least one FASTA formatted sequence')
