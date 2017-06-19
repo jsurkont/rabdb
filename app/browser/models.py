@@ -28,8 +28,8 @@ class ProteinManager(models.Manager):
 class Protein(models.Model):
     objects = ProteinManager()
 
-    protein = models.CharField(max_length=32, unique=True)
-    transcript = models.CharField(max_length=32, unique=True)
+    protein = models.CharField(max_length=64, unique=True)
+    transcript = models.CharField(max_length=64, unique=True)
     gene = models.CharField(max_length=64)
     uniprot = models.CharField(max_length=32, blank=True)
     description = models.TextField()
